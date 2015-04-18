@@ -144,12 +144,12 @@ public class Bisley extends Solitaire {
 		/* Build Score and Cards Left Views */
 		scoreView = new IntegerView (getScore());
 		scoreView.setFontSize (16);
-		scoreView.setBounds (50, 500, 160, 60);
+		scoreView.setBounds (625, 0, 60, 60);
 		container.addWidget (scoreView);
 
 		numLeftView = new IntegerView (getNumLeft());
 		numLeftView.setFontSize (16);
-		numLeftView.setBounds (300, 500, 160, 60);
+		numLeftView.setBounds (625, 95, 60, 60);
 		container.addWidget (numLeftView);		
 	}
 	
