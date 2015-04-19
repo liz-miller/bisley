@@ -54,26 +54,95 @@ public class Bisley extends Solitaire {
 		initializeView();
 		initializeControllers();
 
+		Card ace1 = new Card(1, 1);
+		Card ace2 = new Card(1, 2);
+		Card ace3 = new Card(1, 3);
+		Card ace4 = new Card(1, 4);
+
+		aces[1].add(ace1);
+		aces[2].add(ace2);
+		aces[3].add(ace3);
+		aces[4].add(ace4);
 		
-		// prepare game by dealing 3 cards faceup on each tableau pile
-			for (int pileNum=0; pileNum <14; pileNum++) {
-				for (int num = 1; num <= 3; num++) {
-					Card c = deck.get();
+		for (int pileNum=1; pileNum < 10; pileNum++){
+			for (int i=0; i<=3; i++){
+				Card c = deck.get();
+
+				while(c != null && c.getRank()==1) c = deck.get();
+				
+				if(c != null){
+					c.setFaceUp(true);
 					
-					// check if dealt card is an ace. if so, move to ace foundation.
-					for(int suit = 1; suit<5; suit++){
-						if(c.getRank()==1 && c.getSuit()==suit){
-							c.setFaceUp(true);
-							aces[suit-1].add(c);
-						}
-					}
-					
-				    c.setFaceUp (true);
-					tableau[pileNum].add (c);	
+					System.out.println("Adding (" + c.getSuit() + ", " + c.getRank() + ") to tableau " + pileNum);
+					tableau[pileNum].add(c);
 				}
 			}
-		updateNumberCardsLeft (-52);
+		
+		}
+		
+		for (int pileNum=10; pileNum < 14; pileNum++){
+			for (int i=0; i<=2; i++){
+				Card c = deck.get();
+
+				while(c != null && c.getRank()==1) c = deck.get();
+				
+				if(c != null){
+					c.setFaceUp(true);
+					
+					System.out.println("Adding (" + c.getSuit() + ", " + c.getRank() + ") to tableau " + pileNum);
+					tableau[pileNum].add(c);
+				}
+			}
+		
+		}
+		updateNumberCardsLeft(-52);
 	}
+		
+
+		
+//		// prepare game by dealing 3 cards faceup on each tableau pile
+//			for (int pileNum=0; pileNum <14; pileNum++) {
+//				
+//				if(pileNum<10){
+//					for (int num = 1; num <= 4; num++) {
+//					Card c = deck.get();
+//					
+//					// check if dealt card is an ace. if so, move to ace foundation.
+//					for(int suit = 1; suit<5; suit++){
+//						if(c.getRank()==1 && c.getSuit()==suit){
+//							Card t = c;
+//							
+//							t.setFaceUp(true);
+//							aces[suit-1].add(t);
+//							//updateNumberCardsLeft(-1);
+//						}
+//					  }
+//					
+//						c.setFaceUp (true);
+//						tableau[pileNum].add(c);
+//					}			 
+//				}
+//				
+//				if(pileNum>=10){
+//					for (int num = 1; num <= 3; num++) {
+//						Card c = deck.get();
+//						
+//						// check if dealt card is an ace. if so, move to ace foundation.
+//						for(int suit = 1; suit<5; suit++){
+//							if(c.getRank()==1 && c.getSuit()==suit){
+//								Card t = c;
+//								t.setFaceUp(true);
+//								aces[suit-1].add(t);
+//								//updateNumberCardsLeft(-1);
+//							}
+//						  }
+//						   	c.setFaceUp (true);
+//							tableau[pileNum].add (c);
+//							//updateNumberCardsLeft(-3);
+//						}
+//				}
+//			}
+//	}
 
 	private void initializeControllers() {//
 //		tableauView[14].setMouseAdapter(new TableauPileController (this, tableauView[14]));
@@ -94,19 +163,26 @@ public class Bisley extends Solitaire {
 		
 		/* Build tableau */
 		//top row 6 piles, #0-5
-		for (int pileNum = 1; pileNum <=6; pileNum++) { 
+		for (int pileNum = 1; pileNum <=6; pileNum++) {
+			tableau[pileNum] = new BuildablePile();
 			tableauView[pileNum] = new BuildablePileView (tableau[pileNum]);
 			tableauView[pileNum].setBounds (20*pileNum + (pileNum-1)*ci.getWidth(), 10, 5+ci.getWidth(), 2*ci.getHeight());
 			container.addWidget (tableauView[pileNum]);
 		}
 		//bottom row 7 piles, #6-12
 		for (int pileNum = 7; pileNum <=13; pileNum++) {
+			tableau[pileNum] = new BuildablePile();
 			tableauView[pileNum] = new BuildablePileView (tableau[pileNum]);
 			tableauView[pileNum].setBounds (20*(pileNum+5) + ci.getWidth()*(pileNum-10), 20+3*ci.getWidth(), 5+ci.getWidth(), 2*ci.getHeight());
 			container.addWidget (tableauView[pileNum]);
 		}
 		
 		/* Build King Foundations */
+		kings[1] = new Pile();
+		kings[2] = new Pile();
+		kings[3] = new Pile();
+		kings[4] = new Pile();
+		
 		kingsViews[1] = new PileView(kings[1]);
 		kingsViews[1].setBounds(400+5*ci.getWidth(),10,5+ci.getWidth(), 5+ci.getHeight());
 		container.addWidget(kingsViews[1]);
@@ -125,6 +201,11 @@ public class Bisley extends Solitaire {
 		
 
 		/* Build Ace Foundations */
+		aces[1] = new Pile();
+		aces[2] = new Pile();
+		aces[3] = new Pile();
+		aces[4] = new Pile();
+		
 		acesViews[1] = new PileView(aces[1]);
 		acesViews[1].setBounds(500+5*ci.getWidth(),10,5+ci.getWidth(), 5+ci.getHeight());
 		container.addWidget(acesViews[1]);
@@ -156,9 +237,12 @@ public class Bisley extends Solitaire {
 	private void initializeModel(int seed) {
 		deck = new Deck("deck");
 		deck.create(seed);
+		deck.shuffle(seed);
+
+		System.out.println("Deck cards: " + deck.count());
 		model.addElement (deck);   // add to our model (as defined within our superclass).
 
-		for (int i = 0; i <= 4; i++) {
+		for (int i = 1; i <= 4; i++) {
 			aces[i] = new Pile("aces" + i);
 			model.addElement(aces[i]);
 			
@@ -166,7 +250,7 @@ public class Bisley extends Solitaire {
 			model.addElement(kings[i]);
 		}
 					
-		for (int i = 0; i < 14; i++){
+		for (int i = 1; i < 14; i++){
 			tableau[i] = new BuildablePile("tableau" + i);
 			model.addElement(tableau[i]);
 		}	
