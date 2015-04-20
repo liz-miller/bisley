@@ -1,16 +1,15 @@
 package miller;
 
 import java.awt.Dimension;
-
-import heineman.klondike.KlondikeDeckController;
 import ks.common.controller.SolitaireMouseMotionAdapter;
+import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.games.Solitaire;
 import ks.common.games.SolitaireUndoAdapter;
-import ks.common.model.BuildablePile;
+import ks.common.model.Column;
 import ks.common.model.Card;
 import ks.common.model.Deck;
 import ks.common.model.Pile;
-import ks.common.view.BuildablePileView;
+import ks.common.view.ColumnView;
 import ks.common.view.CardImages;
 import ks.common.view.DeckView;
 import ks.common.view.IntegerView;
@@ -20,12 +19,12 @@ import ks.launcher.Main;
 public class Bisley extends Solitaire {
 
 	Deck deck;
-	BuildablePile tableau[] = new BuildablePile[14];
+	Column tableau[] = new Column[14];
 	Pile aces[] = new Pile[5];
 	Pile kings[] = new Pile[5];
 	
 	DeckView deckView;
-	BuildablePileView[] tableauView = new BuildablePileView[14];
+	ColumnView[] tableauView = new ColumnView[14];
 	PileView[] acesViews = new PileView[5];
 	PileView[] kingsViews = new PileView[5];
 	
@@ -73,7 +72,7 @@ public class Bisley extends Solitaire {
 				if(c != null){
 					c.setFaceUp(true);
 					
-					System.out.println("Adding (" + c.getSuit() + ", " + c.getRank() + ") to tableau " + pileNum);
+					//System.out.println("Adding (" + c.getSuit() + ", " + c.getRank() + ") to tableau " + pileNum);
 					tableau[pileNum].add(c);
 				}
 			}
@@ -89,7 +88,7 @@ public class Bisley extends Solitaire {
 				if(c != null){
 					c.setFaceUp(true);
 					
-					System.out.println("Adding (" + c.getSuit() + ", " + c.getRank() + ") to tableau " + pileNum);
+					//System.out.println("Adding (" + c.getSuit() + ", " + c.getRank() + ") to tableau " + pileNum);
 					tableau[pileNum].add(c);
 				}
 			}
@@ -97,65 +96,42 @@ public class Bisley extends Solitaire {
 		}
 		updateNumberCardsLeft(-52);
 	}
-		
 
+	private void initializeControllers() {
 		
-//		// prepare game by dealing 3 cards faceup on each tableau pile
-//			for (int pileNum=0; pileNum <14; pileNum++) {
-//				
-//				if(pileNum<10){
-//					for (int num = 1; num <= 4; num++) {
-//					Card c = deck.get();
-//					
-//					// check if dealt card is an ace. if so, move to ace foundation.
-//					for(int suit = 1; suit<5; suit++){
-//						if(c.getRank()==1 && c.getSuit()==suit){
-//							Card t = c;
-//							
-//							t.setFaceUp(true);
-//							aces[suit-1].add(t);
-//							//updateNumberCardsLeft(-1);
-//						}
-//					  }
-//					
-//						c.setFaceUp (true);
-//						tableau[pileNum].add(c);
-//					}			 
-//				}
-//				
-//				if(pileNum>=10){
-//					for (int num = 1; num <= 3; num++) {
-//						Card c = deck.get();
-//						
-//						// check if dealt card is an ace. if so, move to ace foundation.
-//						for(int suit = 1; suit<5; suit++){
-//							if(c.getRank()==1 && c.getSuit()==suit){
-//								Card t = c;
-//								t.setFaceUp(true);
-//								aces[suit-1].add(t);
-//								//updateNumberCardsLeft(-1);
-//							}
-//						  }
-//						   	c.setFaceUp (true);
-//							tableau[pileNum].add (c);
-//							//updateNumberCardsLeft(-3);
-//						}
-//				}
-//			}
-//	}
+		// Now for each Column (Tableau).
+		for (int i = 1; i <= 13; i++) {
+			tableauView[i].setMouseAdapter (new TableauToTableauController (this, tableauView[i]));
+			tableauView[i].setMouseMotionAdapter (new SolitaireMouseMotionAdapter (this));
+			tableauView[i].setUndoAdapter (new SolitaireUndoAdapter(this));
+		}
 
-	private void initializeControllers() {//
-//		tableauView[14].setMouseAdapter(new TableauPileController (this, tableauView[14]));
-//		tableauView[14].setMouseMotionAdapter (new SolitaireMouseMotionAdapter(this));
-//		tableauView[14].setUndoAdapter (new SolitaireUndoAdapter(this));
-//		
-//		acesViews[5].setMouseAdapter(new FoundationController (this, acesViews[5], true));
-//		acesViews[5].setMouseMotionAdapter (new SolitaireMouseMotionAdapter(this));
-//		acesViews[5].setUndoAdapter (new SolitaireUndoAdapter(this));
-//		
-//		kingsViews[5].setMouseAdapter(new FoundationController (this, kingsViews[5], false));
-//		kingsViews[5].setMouseMotionAdapter (new SolitaireMouseMotionAdapter(this));
-//		kingsViews[5].setUndoAdapter (new SolitaireUndoAdapter(this));
+		// Now for each Foundation (Aces and Kings).
+		for (int i = 1; i <= 4; i++) {
+			acesViews[i].setMouseAdapter (new TableauToFoundationController (this, acesViews[i], true));
+			acesViews[i].setMouseMotionAdapter (new SolitaireMouseMotionAdapter (this));
+			acesViews[i].setUndoAdapter (new SolitaireUndoAdapter(this));
+			
+			kingsViews[i].setMouseAdapter (new TableauToFoundationController (this, kingsViews[i], false));
+			kingsViews[i].setMouseMotionAdapter (new SolitaireMouseMotionAdapter (this));
+			kingsViews[i].setUndoAdapter (new SolitaireUndoAdapter(this));
+		}
+
+		// Ensure that any releases (and movement) are handled by the non-interactive widgets
+		numLeftView.setMouseMotionAdapter (new SolitaireMouseMotionAdapter(this));
+		numLeftView.setMouseAdapter (new SolitaireReleasedAdapter(this));
+		numLeftView.setUndoAdapter (new SolitaireUndoAdapter(this));
+
+		// same for scoreView
+		scoreView.setMouseMotionAdapter (new SolitaireMouseMotionAdapter(this));
+		scoreView.setMouseAdapter (new SolitaireReleasedAdapter(this));
+		scoreView.setUndoAdapter (new SolitaireUndoAdapter(this));
+
+		// Finally, cover the Container for any events not handled by a widget:
+		getContainer().setMouseMotionAdapter(new SolitaireMouseMotionAdapter(this));
+		getContainer().setMouseAdapter (new SolitaireReleasedAdapter(this));
+		getContainer().setUndoAdapter (new SolitaireUndoAdapter(this));
+		
 	}
 
 	private void initializeView() {
@@ -164,15 +140,15 @@ public class Bisley extends Solitaire {
 		/* Build tableau */
 		//top row 6 piles, #0-5
 		for (int pileNum = 1; pileNum <=6; pileNum++) {
-			tableau[pileNum] = new BuildablePile();
-			tableauView[pileNum] = new BuildablePileView (tableau[pileNum]);
+			tableau[pileNum] = new Column();
+			tableauView[pileNum] = new ColumnView (tableau[pileNum]);
 			tableauView[pileNum].setBounds (20*pileNum + (pileNum-1)*ci.getWidth(), 10, 5+ci.getWidth(), 2*ci.getHeight());
 			container.addWidget (tableauView[pileNum]);
 		}
 		//bottom row 7 piles, #6-12
 		for (int pileNum = 7; pileNum <=13; pileNum++) {
-			tableau[pileNum] = new BuildablePile();
-			tableauView[pileNum] = new BuildablePileView (tableau[pileNum]);
+			tableau[pileNum] = new Column();
+			tableauView[pileNum] = new ColumnView (tableau[pileNum]);
 			tableauView[pileNum].setBounds (20*(pileNum+5) + ci.getWidth()*(pileNum-10), 20+3*ci.getWidth(), 5+ci.getWidth(), 2*ci.getHeight());
 			container.addWidget (tableauView[pileNum]);
 		}
@@ -239,7 +215,7 @@ public class Bisley extends Solitaire {
 		deck.create(seed);
 		deck.shuffle(seed);
 
-		System.out.println("Deck cards: " + deck.count());
+		//System.out.println("Deck cards: " + deck.count());
 		model.addElement (deck);   // add to our model (as defined within our superclass).
 
 		for (int i = 1; i <= 4; i++) {
@@ -251,7 +227,7 @@ public class Bisley extends Solitaire {
 		}
 					
 		for (int i = 1; i < 14; i++){
-			tableau[i] = new BuildablePile("tableau" + i);
+			tableau[i] = new Column("tableau" + i);
 			model.addElement(tableau[i]);
 		}	
 		

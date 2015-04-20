@@ -5,6 +5,10 @@ import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Pile;
 
+/*
+ * Move the top card from a tableau pile to the top of an Ace Foundation
+ */
+
 public class MoveToAceFoundationMove extends ks.common.model.Move{
 	/** The tableau buildable pile. */
 	protected BuildablePile tableau;
@@ -33,12 +37,12 @@ public class MoveToAceFoundationMove extends ks.common.model.Move{
 		// EXECUTE:
 		// Deal with both situations
 		if (draggingCard == null)
-			aceFoundation.add (tableau.get());
+			return false;
 		else
 			aceFoundation.add (draggingCard);
 
 		// advance score by adding the rank of the draggingCard to the current total.
-		theGame.updateScore (draggingCard.getRank());
+		theGame.updateScore (+1);
 		return true;
 	}
 	
@@ -48,10 +52,11 @@ public class MoveToAceFoundationMove extends ks.common.model.Move{
 
 		// EXECUTE:
 		// remove card and move to aceFoundation
-		tableau.add (aceFoundation.get());
+		Card undoMove = aceFoundation.get();
+		tableau.add (undoMove);
 
 		// reverse score advance
-		game.updateScore (-draggingCard.getRank());
+		game.updateScore (-1);
 		return true;
 	}
 
