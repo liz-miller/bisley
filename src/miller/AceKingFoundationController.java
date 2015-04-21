@@ -1,7 +1,21 @@
 package miller;
-
+import heineman.klondike.MoveCardToFoundationMove;
+import heineman.klondike.MoveWasteToFoundationMove;
 
 import java.awt.event.MouseEvent;
+
+/*
+ * AceKingFoundationController
+ * 		MouseRelease
+ * 
+ * May receive 1 or more cards in ascending/descending order of the same suit to a King Pile or Ace Pile
+ * Makes instances of:
+ * 		FoundationMove
+ * 
+ * Cards cannot be moved from the King Pile or Ace Pile
+ */
+
+
 
 import ks.common.model.BuildablePile;
 import ks.common.model.Card;
@@ -15,28 +29,24 @@ import ks.common.view.Container;
 import ks.common.view.PileView;
 import ks.common.view.Widget;
 
-import miller.Bisley;;
-
-/**
- * Controls all actions to do with mouse events over Foundation Piles
- * <p>
- * Creation date: (11/10/01 11:51:49 PM)
- * @author: George T. Heineman (heineman@cs.wpi.edu)
- */
-public class TableauToFoundationController extends java.awt.event.MouseAdapter {
-	/** The Bisley Game. */
+public class AceKingFoundationController extends java.awt.event.MouseAdapter {
+	/** The RedBlack Game. */
 	protected Bisley theGame;
 
 	/** The specific Foundation pileView being controlled. */
 	protected PileView src;
+	
+	/** Am I red ? */
+	boolean isAce;
+	
 	/**
-	 * FoundationController constructor comment.
+	 * RedBlackFoundationController constructor comment.
 	 */
-	public TableauToFoundationController(Bisley theGame, PileView foundation) {
-		super();
-
+	public AceKingFoundationController (Bisley theGame, PileView foundation, boolean isAce) {
+		
 		this.theGame = theGame;
 		this.src = foundation;
+		this.isAce = isAce;
 	}
 	/**
 	 * Coordinate reaction to the completion of a Drag Event.
@@ -85,33 +95,22 @@ public class TableauToFoundationController extends java.awt.event.MouseAdapter {
 			// we only want the Move object to know things about the move, but we have to put
 			// in a check to verify that Column is of size one. NO good solution that I can
 			// see right now.
-			if (col.count() == 1) {
+			if (col.count() != 1) {
 				fromWidget.returnWidget (draggingWidget);  // return home
 			} else {
-				
-				if(col.rank()==13){
-					Move m = new MoveToKingFoundationMove (fromPile, col.peek(), foundation);
+				Move m = new FoundationMove (fromPile, col.peek(), foundation, isAce);
 
-					if (m.doMove (theGame)) {
-						// Success
-						theGame.pushMove (m);
-					} else {
-						fromWidget.returnWidget (draggingWidget);
-					}
-				}else if(col.rank()==1){
-					Move m = new MoveToAceFoundationMove (fromPile, col.peek(), foundation);
-
-					if (m.doMove (theGame)) {
-						// Success
-						theGame.pushMove(m);
-					} else {
-						fromWidget.returnWidget (draggingWidget);
-					}
+				if (m.doMove (theGame)) {
+					// Success
+					theGame.pushMove (m);
+					theGame.refreshWidgets();
+				} else {
+					fromWidget.returnWidget (draggingWidget);
 				}
 			}
-//		} else {
+		} //else {
 //			// Coming from the waste [number of cards being dragged must be one]
-//			Pile wastePile = (Pile) fromWidget.getModelElement();
+//			Pile  = (Pile) fromWidget.getModelElement();
 //
 //			/** Must be the CardView widget being dragged. */
 //			CardView cardView = (CardView) draggingWidget;
@@ -146,6 +145,6 @@ public class TableauToFoundationController extends java.awt.event.MouseAdapter {
 		
 		// finally repaint
 		c.repaint();
-	   }
 	}
 }
+

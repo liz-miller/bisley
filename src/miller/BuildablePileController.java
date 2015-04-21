@@ -1,7 +1,7 @@
 package miller;
 
+import miller.Bisley;
 import java.awt.event.MouseEvent;
-
 import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Column;
@@ -12,10 +12,8 @@ import ks.common.view.CardView;
 import ks.common.view.ColumnView;
 import ks.common.view.Container;
 import ks.common.view.Widget;
-import miller.Bisley;
 
-
-public class TableauToTableauController extends java.awt.event.MouseAdapter {
+public class BuildablePileController extends java.awt.event.MouseAdapter {
 
 	/** The game that we are partly controlling. */
 	protected Bisley theGame;
@@ -25,48 +23,13 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 	/**
 	 * BuildablePileController constructor comment.
 	 */
-	public TableauToTableauController(Bisley theGame, BuildablePileView bpv) {
+	public BuildablePileController(Bisley theGame, BuildablePileView bpv) {
 		super();
+
 		this.theGame = theGame;
 		this.src = bpv;
 	}
-	/**
-	 * Try to play the faceup card directly to the foundation.
-	 *
-	 * @param me java.awt.event.MouseEvent
-	 */
-	public void mouseClicked(MouseEvent me) {
-
-		if(me.getClickCount() > 1) {
-
-			// Point to our underlying model element.
-			BuildablePile theBP = (BuildablePile) src.getModelElement();
-			boolean isAce = false;
-
-			// See if we can move this one card.
-			boolean moveMade = false;
-			for (int f = 1; f <=4; f++) {
-				Pile fp = (Pile) theGame.getModelElement ("foundation" + f);
-				if(theBP.peek().getRank()==Card.ACE)
-					isAce = true;		
-				Move m = new FoundationMove (theBP, theBP.peek(), fp,isAce);
-				if (m.doMove(theGame)) {
-
-					// Success! Add this move to our history.
-					theGame.pushMove (m);
-
-					moveMade = true;
-					theGame.refreshWidgets();
-					break;
-				}
-			}
-
-			if (!moveMade) {
-				java.awt.Toolkit.getDefaultToolkit().beep();
-				return; // announce our displeasure			
-			}
-		}
-	}
+	
 	/**
 	 * Coordinate reaction to the beginning of a Drag Event.
 	 *
@@ -92,20 +55,6 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 			return;
 		}
 
-		// No Face Up cards means that we must be requesting to flip a card.
-		// If we get here, we must have some cards in the BuildablePile
-//		if (theBP.getNumFaceUp() == 0) {
-//			Move m = new FlipCardMove (theBP);
-//			if (m.doMove(theGame)) {
-//				theGame.pushMove (m);
-//				theGame.refreshWidgets();
-//			} else {
-//				// error in flip card. Not sure what to do
-//				System.err.println ("BuildablePileController::mousePressed(). Unexpected failure in flip card.");
-//			}
-//			return;
-//		}
-
 		// Get a column of cards to move from the BuildablePileView
 		// Note that this method will alter the model for BuildablePileView if the condition is met.
 		ColumnView colView = src.getColumnView (me);
@@ -118,12 +67,18 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 		// Check conditions
 		Column col = (Column) colView.getModelElement();
 		if (col == null) {
-			System.err.println ("TableauToTableauController::mousePressed(): Unexpectedly encountered a ColumnView with no Column.");
+			System.err.println ("BuildablePileController::mousePressed(): Unexpectedly encountered a ColumnView with no Column.");
 			return; // sanity check, but should never happen.
 		}
 
-		// verify that Column has desired Klondike Properties to move
-		if ((!col.descending()) || (!col.alternatingColors())) {
+		/*
+		 * Verify that Column has desired Bisley Properties to move
+		 * Ascending Column with same suit
+		 * or
+		 * Descending Column with same suit
+		 */
+		
+		if ((col.descending() && col.sameSuit()) || (col.ascending() && col.sameSuit())){
 			theBP.push (col);
 			java.awt.Toolkit.getDefaultToolkit().beep();
 			return; // announce our displeasure
@@ -200,27 +155,54 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 					// Invalid move. Restore to original column. NO MOVE MADE
 					fromPile.push (col);
 				}
-			}		
-		} else {
-			// Must be from the WastePile
-			CardView cardView = (CardView) w;
-			Card theCard = (Card) cardView.getModelElement();
-			if (theCard == null) {
-				System.err.println ("BuildablePileController::mouseReleased(): somehow CardView model element is null.");
-				return;
-			}
-			BuildablePile tableau = (BuildablePile) fromWidget.getModelElement();
-			Pile foundation = (Pile) src.getModelElement();
-			Move m = new FoundationMove(tableau, theCard, foundation,false);
-			if (m.doMove (theGame)) {
-				// Successful move! add move to our set of moves
-				theGame.pushMove (m); 
-			} else { 
-				// Invalid move. Restore to original waste pile. NO MOVE MADE
-				tableau.add (theCard);
-			}
+			}	
 		}
-		// release the dragging object, (container will reset dragSource)
+//		} else {
+//			// Must be from the tableau
+//			CardView cardView = (CardView) w;
+//			Card theCard = (Card) cardView.getModelElement();
+//			if (theCard == null) {
+//				System.err.println ("BuildablePileController::mouseReleased(): somehow CardView model element is null.");
+//				return;
+//			}
+//			if(theCard.getRank()==13){ //must be a King
+//				BuildablePile tableau = (BuildablePile) fromWidget.getModelElement();
+//				Pile foundation = (Pile) src.getModelElement(); // Determine the To Pile
+//				Move m = new MoveToKingFoundationMove (tableau, theCard, foundation);
+//				if (m.doMove (theGame)) {
+//					// Successful move! add move to our set of moves
+//					theGame.pushMove (m); 
+//				} else { 
+//					// Invalid move. Restore to original waste pile. NO MOVE MADE
+//					tableau.add (theCard);
+//				}
+//			}
+//			if(theCard.getRank()==1){
+//				BuildablePile tableau = (BuildablePile) fromWidget.getModelElement();
+//				Pile foundation = (Pile) src.getModelElement(); // Determine the To Pile
+//				Move m = new MoveToAceFoundationMove (tableau, theCard, foundation);
+//				if (m.doMove (theGame)) {
+//					// Successful move! add move to our set of moves
+//					theGame.pushMove (m); 
+//				} else { 
+//					// Invalid move. Restore to original waste pile. NO MOVE MADE
+//					tableau.add (theCard);
+//				}
+//			}
+//			if(theCard.getRank()>1 && theCard.getRank()<13){
+//				BuildablePile fromTableau = (BuildablePile) fromWidget.getModelElement();
+//				BuildablePile endTableau = (BuildablePile) src.getModelElement(); // Determine the To Pile
+//				Move m = new TableauToTableauMove(fromTableau, theCard, endTableau);
+//				if (m.doMove (theGame)) {
+//					// Successful move! add move to our set of moves
+//					theGame.pushMove (m); 
+//				} else { 
+//					// Invalid move. Restore to original waste pile. NO MOVE MADE
+//					fromTableau.add (theCard);
+//				}
+//			}
+//		}
+// release the dragging object, (container will reset dragSource)
 		c.releaseDraggingObject();
 		
 		c.repaint();

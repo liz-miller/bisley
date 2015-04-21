@@ -5,11 +5,11 @@ import ks.common.controller.SolitaireMouseMotionAdapter;
 import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.games.Solitaire;
 import ks.common.games.SolitaireUndoAdapter;
-import ks.common.model.Column;
+import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Deck;
 import ks.common.model.Pile;
-import ks.common.view.ColumnView;
+import ks.common.view.BuildablePileView;
 import ks.common.view.CardImages;
 import ks.common.view.DeckView;
 import ks.common.view.IntegerView;
@@ -19,12 +19,12 @@ import ks.launcher.Main;
 public class Bisley extends Solitaire {
 
 	Deck deck;
-	Column tableau[] = new Column[14];
+	BuildablePile tableau[] = new BuildablePile[14];
 	Pile aces[] = new Pile[5];
 	Pile kings[] = new Pile[5];
 	
 	DeckView deckView;
-	ColumnView[] tableauView = new ColumnView[14];
+	BuildablePileView[] tableauView = new BuildablePileView[14];
 	PileView[] acesViews = new PileView[5];
 	PileView[] kingsViews = new PileView[5];
 	
@@ -99,24 +99,25 @@ public class Bisley extends Solitaire {
 
 	private void initializeControllers() {
 		
-		// Now for each Column (Tableau).
+		// Now for each BuildablePile (Tableau).
 		for (int i = 1; i <= 13; i++) {
 			tableauView[i].setMouseAdapter (new TableauToTableauController (this, tableauView[i]));
 			tableauView[i].setMouseMotionAdapter (new SolitaireMouseMotionAdapter (this));
 			tableauView[i].setUndoAdapter (new SolitaireUndoAdapter(this));
 		}
 
-		// Now for each Foundation (Aces and Kings).
+		 //Now for each Foundation (Aces and Kings).
 		for (int i = 1; i <= 4; i++) {
-			acesViews[i].setMouseAdapter (new TableauToFoundationController (this, acesViews[i], true));
+			acesViews[i].setMouseAdapter (new AceKingFoundationController (this, acesViews[i], true));
 			acesViews[i].setMouseMotionAdapter (new SolitaireMouseMotionAdapter (this));
 			acesViews[i].setUndoAdapter (new SolitaireUndoAdapter(this));
-			
-			kingsViews[i].setMouseAdapter (new TableauToFoundationController (this, kingsViews[i], false));
+					
+			kingsViews[i].setMouseAdapter (new AceKingFoundationController (this, kingsViews[i], false));
 			kingsViews[i].setMouseMotionAdapter (new SolitaireMouseMotionAdapter (this));
 			kingsViews[i].setUndoAdapter (new SolitaireUndoAdapter(this));
 		}
 
+		
 		// Ensure that any releases (and movement) are handled by the non-interactive widgets
 		numLeftView.setMouseMotionAdapter (new SolitaireMouseMotionAdapter(this));
 		numLeftView.setMouseAdapter (new SolitaireReleasedAdapter(this));
@@ -140,15 +141,15 @@ public class Bisley extends Solitaire {
 		/* Build tableau */
 		//top row 6 piles, #0-5
 		for (int pileNum = 1; pileNum <=6; pileNum++) {
-			tableau[pileNum] = new Column();
-			tableauView[pileNum] = new ColumnView (tableau[pileNum]);
+			tableau[pileNum] = new BuildablePile();
+			tableauView[pileNum] = new BuildablePileView (tableau[pileNum]);
 			tableauView[pileNum].setBounds (20*pileNum + (pileNum-1)*ci.getWidth(), 10, 5+ci.getWidth(), 2*ci.getHeight());
 			container.addWidget (tableauView[pileNum]);
 		}
 		//bottom row 7 piles, #6-12
 		for (int pileNum = 7; pileNum <=13; pileNum++) {
-			tableau[pileNum] = new Column();
-			tableauView[pileNum] = new ColumnView (tableau[pileNum]);
+			tableau[pileNum] = new BuildablePile();
+			tableauView[pileNum] = new BuildablePileView (tableau[pileNum]);
 			tableauView[pileNum].setBounds (20*(pileNum+5) + ci.getWidth()*(pileNum-10), 20+3*ci.getWidth(), 5+ci.getWidth(), 2*ci.getHeight());
 			container.addWidget (tableauView[pileNum]);
 		}
@@ -175,7 +176,6 @@ public class Bisley extends Solitaire {
 		kingsViews[4].setBounds(400+5*ci.getWidth(),270+ci.getHeight(),5+ci.getWidth(), 5+ci.getHeight());
 		container.addWidget(kingsViews[4]);
 		
-
 		/* Build Ace Foundations */
 		aces[1] = new Pile();
 		aces[2] = new Pile();
@@ -227,7 +227,7 @@ public class Bisley extends Solitaire {
 		}
 					
 		for (int i = 1; i < 14; i++){
-			tableau[i] = new Column("tableau" + i);
+			tableau[i] = new BuildablePile("tableau" + i);
 			model.addElement(tableau[i]);
 		}	
 		

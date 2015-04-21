@@ -81,30 +81,33 @@ public class MoveToKingFoundationMove extends ks.common.model.Move{
 		 * The suit is not spades.
 		 */
 		
-		if (!kingFoundation.empty() && (c.getRank() == kingFoundation.rank() - 1) && (c.getSuit() == kingFoundation.suit()))
-			
-			// Hearts: build down to 5
-			if(c.getSuit()==Card.HEARTS && kingFoundation.rank() >=5){
-				validation = true;
+		if ((c.getRank()==Card.KING)){
+			if((c.getRank() == kingFoundation.rank() - 1) && (c.getSuit() == kingFoundation.suit())){
+				// Hearts: build down to 5
+				if(c.getSuit()==Card.HEARTS && kingFoundation.rank() >=5){
+					validation = true;
+				}
+				// Diamonds: build down to 9
+				if(c.getSuit()==Card.DIAMONDS && kingFoundation.rank()>=9){
+					validation = true;
+				}
+				// Clubs: build down to 2
+				if(c.getSuit()==Card.CLUBS && kingFoundation.rank()>=2){
+					validation = true;
+				}
+				// The suit is not spades.
+				if(kingFoundation.empty() && c.getSuit()==Card.SPADES && c.getRank()==Card.KING){
+					validation = true;
+				}
+
 			}
-			// Diamonds: build down to 9
-			if(c.getSuit()==Card.DIAMONDS && kingFoundation.rank()>=9){
-				validation = true;
-			}
-			// Clubs: build down to 2
-			if(c.getSuit()==Card.CLUBS && kingFoundation.rank()>=2){
-				validation = true;
-			}
-			// The suit is not spades.
-			if(kingFoundation.suit()==Card.SPADES){
-				validation = false;
-			}
+		}
 
 		/*
 		 * Verify that the first card in the foundation is a king.
 		 */
-		if (kingFoundation.empty() && (c.getRank() == Card.KING))
-			validation = true;
+//		if (kingFoundation.empty() && (c.getRank() == Card.KING))
+//			validation = true;
 
 		return validation;
 	}
