@@ -213,7 +213,7 @@ public class Bisley extends Solitaire {
 	private void initializeModel(int seed) {
 		deck = new Deck("deck");
 		deck.create(seed);
-		deck.shuffle(seed);
+		//deck.shuffle(seed);
 
 		//System.out.println("Deck cards: " + deck.count());
 		model.addElement (deck);   // add to our model (as defined within our superclass).

@@ -106,7 +106,7 @@ public boolean valid (Solitaire game) {
 	
 	//   moveColumnBetweenPiles(Column col, BuildablePile to) : to.empty()
 	if (to.empty())
-		validation = true;
+		validation = false;
 
 	// 	  moveColumnBetweenPiles(Column col,BuildablePile to) : not col.empty() and col.bottom() == to.rank() - 1
 	if (!to.empty() && (targetColumn.peek(0).getRank() == to.rank() - 1 || targetColumn.peek(0).getRank() == to.rank() + 1) && (targetColumn.peek(0).sameSuit(to.peek()))) 

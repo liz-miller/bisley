@@ -60,10 +60,9 @@ public class TableauToTableauMove extends Move {
 		 * Starting tableau card and ending tableau card have the same suit.
 		 */
 		
-//		if(end.empty()){
-//			validation = true;
-//		}else 
-		if((cardMoved.getSuit()==endTop.getSuit()) && ((cardMoved.getRank()+1==endTop.getRank()) ||
+		if(end.empty()){
+			validation = false;
+		}else if((cardMoved.getSuit()==endTop.getSuit()) && ((cardMoved.getRank()+1==endTop.getRank()) ||
 				(cardMoved.getRank()-1==endTop.getRank()))){
 			validation = true;
 	    }
