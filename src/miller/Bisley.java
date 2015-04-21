@@ -38,7 +38,7 @@ public class Bisley extends Solitaire {
 
 	@Override
 	public boolean hasWon() {
-		return getScore().getValue() == 52;
+		return getScore().getValue() == 44; //there are 4 aces that cannot score points as well as the potential 4 automoves.
 	}
 	
 	@Override
@@ -150,7 +150,7 @@ public class Bisley extends Solitaire {
 		for (int pileNum = 7; pileNum <=13; pileNum++) {
 			tableau[pileNum] = new BuildablePile();
 			tableauView[pileNum] = new BuildablePileView (tableau[pileNum]);
-			tableauView[pileNum].setBounds (20*(pileNum+5) + ci.getWidth()*(pileNum-10), 20+3*ci.getWidth(), 5+ci.getWidth(), 2*ci.getHeight());
+			tableauView[pileNum].setBounds (20*(pileNum+5) + ci.getWidth()*(pileNum-10), 270+ci.getWidth(), 5+ci.getWidth(), 2*ci.getHeight());
 			container.addWidget (tableauView[pileNum]);
 		}
 		
@@ -213,7 +213,7 @@ public class Bisley extends Solitaire {
 	private void initializeModel(int seed) {
 		deck = new Deck("deck");
 		deck.create(seed);
-		//deck.shuffle(seed);
+		deck.shuffle(seed);
 
 		//System.out.println("Deck cards: " + deck.count());
 		model.addElement (deck);   // add to our model (as defined within our superclass).
