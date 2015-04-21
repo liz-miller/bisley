@@ -85,7 +85,7 @@ public boolean undo(ks.common.games.Solitaire game) {
 	return true;
 }
 /**
- * Action for Klondike: Move a Column from one BuildablePile to another
+ * Action for Bisley: Move a Column from one BuildablePile to another
  *
  * @param game ks.game.Solitaire
  */
@@ -108,8 +108,8 @@ public boolean valid (Solitaire game) {
 	if (to.empty())
 		validation = true;
 
-	// 	  moveColumnBetweenPiles(Column col,BuildablePile to) : not col.empty() and col.bottom() == to.rank() - 1 and to.peek().faceUp() == true
-	if (!to.empty() && (targetColumn.peek(0).getRank() == to.rank() - 1) && (targetColumn.peek(0).oppositeColor(to.peek())) && to.peek().isFaceUp()) 
+	// 	  moveColumnBetweenPiles(Column col,BuildablePile to) : not col.empty() and col.bottom() == to.rank() - 1
+	if (!to.empty() && (targetColumn.peek(0).getRank() == to.rank() - 1 || targetColumn.peek(0).getRank() == to.rank() + 1) && (targetColumn.peek(0).sameSuit(to.peek()))) 
 		validation = true;
 
 	return validation;

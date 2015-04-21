@@ -39,8 +39,8 @@ public class FoundationMove extends Move {
 
 		// EXECUTE:
 		// remove card and move to aceFoundation
-		Card undoMove = foundation.get();
-		tableau.add (undoMove);
+		
+		tableau.add (foundation.get());
 
 		// reverse score advance
 		game.updateScore (-1);
@@ -57,23 +57,25 @@ public class FoundationMove extends Move {
 		// VALIDATION:
 		boolean validation = false;
 
-		if (cardMoved == null) {
+		if (cardMoved != null) {
 			/*
 			 *  not buildablePile.empty()
 			 *  tableau has a rank one less than the foundation
 			 *  tableau and foundation have the same suit
 			 */
-			if (!tableau.empty() && (tableau.rank() == foundation.rank() + 1) && (tableau.suit() == foundation.suit()))
+			if(foundation.empty()){
 				validation = true;
-
+			}else if (!foundation.empty() && (cardMoved.getRank() == foundation.rank() + 1 || cardMoved.getRank() == foundation.rank()-1) && (cardMoved.getSuit() == foundation.suit())){
+				validation = true;
+			}
 			/*
 			 * foundation.empty()
 			 * not buildablePile.empty()
 			 * tableau.rank() == KING
 			 */
-			if (!tableau.empty() && tableau.rank() == Card.KING)
+			if (cardMoved.getRank() == Card.KING){
 				validation = true;  
-		} else {
+		    }else {
 			/* 
 			 * Verify the following:
 			 * Ace foundation is not empty.
@@ -106,6 +108,10 @@ public class FoundationMove extends Move {
 				 * The card and the foundation have the same suit.
 				 * The suit is not spades.
 				 */
+				
+				if(foundation.empty()){
+					validation = true; // place the King
+				}
 					
 				if ((cardMoved.getRank() == foundation.rank() - 1) && (cardMoved.getSuit() == foundation.suit()))
 	
@@ -127,7 +133,8 @@ public class FoundationMove extends Move {
 					}
 				}
 		}
-
+	 }
 		return validation;
 	}
 }
+

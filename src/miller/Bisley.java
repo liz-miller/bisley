@@ -161,19 +161,19 @@ public class Bisley extends Solitaire {
 		kings[4] = new Pile();
 		
 		kingsViews[1] = new PileView(kings[1]);
-		kingsViews[1].setBounds(400+5*ci.getWidth(),10,5+ci.getWidth(), 5+ci.getHeight());
+		kingsViews[1].setBounds(400+5*ci.getWidth(),10,ci.getWidth(), ci.getHeight());
 		container.addWidget(kingsViews[1]);
 		
 		kingsViews[2] = new PileView(kings[2]);
-		kingsViews[2].setBounds(400+5*ci.getWidth(),30+ci.getHeight(), 5+ci.getWidth(), 5+ci.getHeight());
+		kingsViews[2].setBounds(400+5*ci.getWidth(),30+ci.getHeight(), ci.getWidth(), ci.getHeight());
 		container.addWidget(kingsViews[2]);
 		
 		kingsViews[3] = new PileView(kings[3]);
-		kingsViews[3].setBounds(400+5*ci.getWidth(),150+ci.getHeight(),5+ci.getWidth(), 5+ci.getHeight());
+		kingsViews[3].setBounds(400+5*ci.getWidth(),150+ci.getHeight(),ci.getWidth(), ci.getHeight());
 		container.addWidget(kingsViews[3]);
 		
 		kingsViews[4] = new PileView(kings[4]);
-		kingsViews[4].setBounds(400+5*ci.getWidth(),270+ci.getHeight(),5+ci.getWidth(), 5+ci.getHeight());
+		kingsViews[4].setBounds(400+5*ci.getWidth(),270+ci.getHeight(),ci.getWidth(), ci.getHeight());
 		container.addWidget(kingsViews[4]);
 		
 		/* Build Ace Foundations */
@@ -183,19 +183,19 @@ public class Bisley extends Solitaire {
 		aces[4] = new Pile();
 		
 		acesViews[1] = new PileView(aces[1]);
-		acesViews[1].setBounds(500+5*ci.getWidth(),10,5+ci.getWidth(), 5+ci.getHeight());
+		acesViews[1].setBounds(500+5*ci.getWidth(),10,ci.getWidth(), ci.getHeight());
 		container.addWidget(acesViews[1]);
 		
 		acesViews[2] = new PileView(aces[2]);
-		acesViews[2].setBounds(500+5*ci.getWidth(),30+ci.getHeight(), 5+ci.getWidth(), 5+ci.getHeight());
+		acesViews[2].setBounds(500+5*ci.getWidth(),30+ci.getHeight(), ci.getWidth(), ci.getHeight());
 		container.addWidget(acesViews[2]);
 		
 		acesViews[3] = new PileView(aces[3]);
-		acesViews[3].setBounds(500+5*ci.getWidth(),150+ci.getHeight(),5+ci.getWidth(), 5+ci.getHeight());
+		acesViews[3].setBounds(500+5*ci.getWidth(),150+ci.getHeight(),ci.getWidth(), ci.getHeight());
 		container.addWidget(acesViews[3]);
 		
 		acesViews[4] = new PileView(aces[4]);
-		acesViews[4].setBounds(500+5*ci.getWidth(),270+ci.getHeight(),5+ci.getWidth(), 5+ci.getHeight());
+		acesViews[4].setBounds(500+5*ci.getWidth(),270+ci.getHeight(),ci.getWidth(), ci.getHeight());
 		container.addWidget(acesViews[4]);
 		
 		/* Build Score and Cards Left Views */

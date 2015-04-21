@@ -196,13 +196,13 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 				if (m.doMove (theGame)) {
 					// Successful move! add move to our set of moves
 					theGame.pushMove (m);
+					theGame.refreshWidgets();
 				} else {
 					// Invalid move. Restore to original column. NO MOVE MADE
 					fromPile.push (col);
 				}
 			}		
 		} else {
-			// Must be from the WastePile
 			CardView cardView = (CardView) w;
 			Card theCard = (Card) cardView.getModelElement();
 			if (theCard == null) {
@@ -210,11 +210,12 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 				return;
 			}
 			BuildablePile tableau = (BuildablePile) fromWidget.getModelElement();
-			Pile foundation = (Pile) src.getModelElement();
-			Move m = new FoundationMove(tableau, theCard, foundation,false);
+			BuildablePile tableauEnd = (BuildablePile) src.getModelElement();
+			Move m = new TableauToTableauMove(tableau, theCard, tableauEnd);
 			if (m.doMove (theGame)) {
 				// Successful move! add move to our set of moves
 				theGame.pushMove (m); 
+				theGame.refreshWidgets();
 			} else { 
 				// Invalid move. Restore to original waste pile. NO MOVE MADE
 				tableau.add (theCard);

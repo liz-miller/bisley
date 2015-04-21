@@ -30,13 +30,13 @@ import ks.common.view.PileView;
 import ks.common.view.Widget;
 
 public class AceKingFoundationController extends java.awt.event.MouseAdapter {
-	/** The RedBlack Game. */
+	/** The Bisley Game. */
 	protected Bisley theGame;
 
 	/** The specific Foundation pileView being controlled. */
 	protected PileView src;
 	
-	/** Am I red ? */
+	/** Am I an Ace? */
 	boolean isAce;
 	
 	/**
@@ -67,7 +67,7 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 			return;
 		}
 
-		/** Recover the from BuildablePile OR waste Pile */
+		/** Recover the from BuildablePile */
 		Widget fromWidget = c.getDragSource();
 		if (fromWidget == null) {
 			System.err.println ("FoundationController::mouseReleased(): somehow no dragSource in container.");
@@ -80,13 +80,13 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 
 		if (fromWidget instanceof BuildablePileView) {
 			// coming from a buildable pile [user may be trying to move multiple cards]
-			BuildablePile fromPile = (BuildablePile) fromWidget.getModelElement();
+			BuildablePile tableau = (BuildablePile) fromWidget.getModelElement();
 
 			/** Must be the ColumnView widget being dragged. */
 			ColumnView columnView = (ColumnView) draggingWidget;
 			Column col = (Column) columnView.getModelElement();
 			if (col == null) {
-				System.err.println ("FoundationController::mouseReleased(): somehow ColumnView model element is null.");
+				System.err.println ("AceKingFoundationController::mouseReleased(): somehow ColumnView model element is null.");
 				c.releaseDraggingObject();			
 				return;
 			}
@@ -98,7 +98,7 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 			if (col.count() != 1) {
 				fromWidget.returnWidget (draggingWidget);  // return home
 			} else {
-				Move m = new FoundationMove (fromPile, col.peek(), foundation, isAce);
+				Move m = new FoundationMove (tableau, col.peek(), foundation, isAce);
 
 				if (m.doMove (theGame)) {
 					// Success
@@ -108,28 +108,29 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 					fromWidget.returnWidget (draggingWidget);
 				}
 			}
-		} //else {
-//			// Coming from the waste [number of cards being dragged must be one]
-//			Pile  = (Pile) fromWidget.getModelElement();
-//
-//			/** Must be the CardView widget being dragged. */
-//			CardView cardView = (CardView) draggingWidget;
-//			Card theCard = (Card) cardView.getModelElement();
-//			if (theCard == null) {
-//				System.err.println ("FoundationController::mouseReleased(): somehow CardView model element is null.");
-//				c.releaseDraggingObject();
-//				return;
-//			}
-//
-//			// must use peek() so we don't modify col prematurely
-//			Move m = new MoveWasteToFoundationMove (wastePile, theCard, foundation);
-//			if (m.doMove (theGame)) {
-//				// Success
-//				theGame.pushMove (m);
-//			} else {
-//				fromWidget.returnWidget (draggingWidget);
-//			}
-//		}
+		} else {
+			// Dragging 1 card from the tableau
+			BuildablePile tableau = (BuildablePile) fromWidget.getModelElement();
+
+			/** Must be the CardView widget being dragged. */
+			CardView cardView = (CardView) draggingWidget;
+			Card theCard = (Card) cardView.getModelElement();
+			if (theCard == null) {
+				System.err.println ("FoundationController::mouseReleased(): somehow CardView model element is null.");
+				c.releaseDraggingObject();
+				return;
+			}
+
+			// must use peek() so we don't modify col prematurely
+			Move m = new FoundationMove (tableau, theCard, foundation, isAce);
+			if (m.doMove (theGame)) {
+				// Success
+				theGame.pushMove (m);
+				theGame.refreshWidgets();
+			} else {
+				fromWidget.returnWidget (draggingWidget);
+			}
+		}
 
 		// Ahhhh. Instead of dealing with multiple 'instanceof' difficulty, why don't we allow
 		// for multiple controllers to be set on the same widget? Each will be invoked, one

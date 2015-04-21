@@ -59,11 +59,14 @@ public class TableauToTableauMove extends Move {
 		 * Starting tableau card is 1 rank less than ending tableau card.
 		 * Starting tableau card and ending tableau card have the same suit.
 		 */
+		
+//		if(end.empty()){
+//			validation = true;
+//		}else 
 		if((cardMoved.getSuit()==endTop.getSuit()) && ((cardMoved.getRank()+1==endTop.getRank()) ||
 				(cardMoved.getRank()-1==endTop.getRank()))){
 			validation = true;
-			}
-		
+	    }
 		return validation;
 	
 		}
