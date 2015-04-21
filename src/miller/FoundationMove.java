@@ -2,7 +2,6 @@ package miller;
 
 import ks.common.games.Solitaire;
 import ks.common.model.BuildablePile;
-import ks.common.model.Column;
 import ks.common.model.Card;
 import ks.common.model.Move;
 import ks.common.model.Pile;
@@ -56,6 +55,8 @@ public class FoundationMove extends Move {
 	public boolean valid(Solitaire game) {
 		// VALIDATION:
 		boolean validation = false;
+		
+		
 
 		if (cardMoved != null) {
 			/*

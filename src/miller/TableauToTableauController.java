@@ -54,9 +54,9 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 
 					// Success! Add this move to our history.
 					theGame.pushMove (m);
-
 					moveMade = true;
 					theGame.refreshWidgets();
+					
 					break;
 				}
 			}
@@ -196,6 +196,9 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 				if (m.doMove (theGame)) {
 					// Successful move! add move to our set of moves
 					theGame.pushMove (m);
+					if(fromPile.peek().getRank()==Card.KING){
+						theGame.kings[fromPile.peek().getSuit()].add(fromPile.get());
+					}
 					theGame.refreshWidgets();
 				} else {
 					// Invalid move. Restore to original column. NO MOVE MADE
@@ -215,6 +218,9 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 			if (m.doMove (theGame)) {
 				// Successful move! add move to our set of moves
 				theGame.pushMove (m); 
+				if(tableau.peek().getRank()==Card.KING){
+					theGame.kings[tableau.peek().getSuit()].add(tableau.get());
+				}
 				theGame.refreshWidgets();
 			} else { 
 				// Invalid move. Restore to original waste pile. NO MOVE MADE

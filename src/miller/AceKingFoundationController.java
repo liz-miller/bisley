@@ -102,7 +102,10 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 
 				if (m.doMove (theGame)) {
 					// Success
-					theGame.pushMove (m);
+					theGame.pushMove (m);			
+					if(tableau.peek().getRank()==Card.KING){
+						theGame.kings[tableau.peek().getSuit()].add(tableau.get());
+					}
 					theGame.refreshWidgets();
 				} else {
 					fromWidget.returnWidget (draggingWidget);
