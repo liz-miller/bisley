@@ -110,11 +110,11 @@ public class FoundationMove extends Move {
 				 * The suit is not spades.
 				 */
 				
-				if(foundation.empty()){
-					validation = true; // place the King
+				if(foundation.empty() && cardMoved.getSuit()!=Card.KING){
+					validation = false; // place the King
 				}
 					
-				if ((cardMoved.getRank() == foundation.rank() - 1) && (cardMoved.getSuit() == foundation.suit()))
+				if ((cardMoved.getRank() == foundation.rank() - 1) && (cardMoved.getSuit() == foundation.suit())){
 	
 					// Hearts: build down to 5
 					if(cardMoved.getSuit()==Card.HEARTS && foundation.rank() >=5){
@@ -135,7 +135,8 @@ public class FoundationMove extends Move {
 				}
 		}
 	 }
-		return validation;
 	}
+		return validation;
+}
 }
 

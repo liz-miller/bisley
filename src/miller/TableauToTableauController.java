@@ -122,7 +122,7 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 			return; // sanity check, but should never happen.
 		}
 
-		// verify that Column has desired Klondike Properties to move
+		// verify that Column has desired Bisley Properties to move
 		if ((!col.descending()) || (!col.alternatingColors())) {
 			theBP.push (col);
 			java.awt.Toolkit.getDefaultToolkit().beep();
@@ -196,7 +196,7 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 				if (m.doMove (theGame)) {
 					// Successful move! add move to our set of moves
 					theGame.pushMove (m);
-					if(fromPile.peek().getRank()==Card.KING){
+					if(!fromPile.empty() && fromPile.peek().getRank()==Card.KING){
 						theGame.kings[fromPile.peek().getSuit()].add(fromPile.get());
 					}
 					theGame.refreshWidgets();
@@ -218,7 +218,7 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 			if (m.doMove (theGame)) {
 				// Successful move! add move to our set of moves
 				theGame.pushMove (m); 
-				if(tableau.peek().getRank()==Card.KING){
+				if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
 					theGame.kings[tableau.peek().getSuit()].add(tableau.get());
 				}
 				theGame.refreshWidgets();
