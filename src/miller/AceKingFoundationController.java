@@ -99,18 +99,46 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 				fromWidget.returnWidget (draggingWidget);  // return home
 			} else {
 				Move m = new FoundationMove (theGame, tableau, col.peek(), foundation, isAce);
-
-				if (m.doMove (theGame)) {
-					// Success
-					theGame.pushMove (m);			
-					if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
-						theGame.kings[tableau.peek().getSuit()].add(tableau.get());
+				boolean checkKings = false;
+				
+				if(col.peek().getRank() == Card.KING){
+					if(col.peek().getSuit() == Card.CLUBS && foundation == theGame.kings[1]){
+						checkKings = true;
+					}else if(col.peek().getSuit() == Card.DIAMONDS && foundation == theGame.kings[2]){
+						checkKings = true;
+					}else if(col.peek().getSuit() == Card.HEARTS && foundation == theGame.kings[3]){
+						checkKings = true;
+					}else if(col.peek().getSuit() == Card.SPADES && foundation == theGame.kings[4]){
+						checkKings = true;
 					}
-					theGame.refreshWidgets();
-				} else {
-					fromWidget.returnWidget (draggingWidget);
 				}
-			}
+
+				if(isAce){
+					if (m.doMove (theGame)) {
+						// Success
+						theGame.pushMove (m);			
+						if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
+							theGame.kings[tableau.peek().getSuit()].add(tableau.get());
+						}
+						theGame.refreshWidgets();
+					} else {
+						fromWidget.returnWidget (draggingWidget);
+					}
+				}else if(!isAce && checkKings){
+					if (m.doMove (theGame)){
+						// Success
+						theGame.pushMove (m);			
+						if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
+							theGame.kings[tableau.peek().getSuit()].add(tableau.get());
+						}
+						theGame.refreshWidgets();
+						}else{
+							fromWidget.returnWidget (draggingWidget);
+						}
+					}else{
+						tableau.add(col.get());//return card back to its starting tableau
+					}
+				}
 		} else {
 			// Dragging 1 card from the tableau
 			BuildablePile tableau = (BuildablePile) fromWidget.getModelElement();
@@ -126,16 +154,45 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 
 			// must use peek() so we don't modify col prematurely
 			Move m = new FoundationMove (theGame, tableau, theCard, foundation, isAce);
-			if (m.doMove (theGame)) {
-				// Success
-				theGame.pushMove (m);
-				if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
-					theGame.kings[tableau.peek().getSuit()].add(tableau.get());
+			boolean checkKings = false;
+			
+			if(theCard.getRank() == Card.KING){
+				if(theCard.getSuit() == Card.CLUBS && foundation == theGame.kings[1]){
+					checkKings = true;
+				}else if(theCard.getSuit() == Card.DIAMONDS && foundation == theGame.kings[2]){
+					checkKings = true;
+				}else if(theCard.getSuit() == Card.HEARTS && foundation == theGame.kings[3]){
+					checkKings = true;
+				}else if(theCard.getSuit() == Card.SPADES && foundation == theGame.kings[4]){
+					checkKings = true;
 				}
-				theGame.refreshWidgets();
-			} else {
-				fromWidget.returnWidget (draggingWidget);
 			}
+
+			if(isAce){
+				if (m.doMove (theGame)) {
+					// Success
+					theGame.pushMove (m);			
+					if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
+						theGame.kings[tableau.peek().getSuit()].add(tableau.get());
+					}
+					theGame.refreshWidgets();
+				} else {
+					fromWidget.returnWidget (draggingWidget);
+				}
+			}else if(!isAce && checkKings){
+				if (m.doMove (theGame)){
+					// Success
+					theGame.pushMove (m);			
+					if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
+						theGame.kings[tableau.peek().getSuit()].add(tableau.get());
+					}
+					theGame.refreshWidgets();
+					}else{
+						fromWidget.returnWidget (draggingWidget);
+					}
+				}else{
+					tableau.add(theCard);//return card back to its starting tableau
+				}
 		}
 
 		// Ahhhh. Instead of dealing with multiple 'instanceof' difficulty, why don't we allow
@@ -154,4 +211,3 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 		c.repaint();
 	}
 }
-

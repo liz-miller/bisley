@@ -28,7 +28,7 @@ public class FoundationMove extends Move {
 
 		foundation.add (cardMoved);
 
-		// advance score by adding the rank of the draggingCard to the current total.
+		// advance score by adding the rank of the cardMoved to the current total.
 		game.updateScore (+1);
 		return true;
 	}
@@ -58,8 +58,6 @@ public class FoundationMove extends Move {
 		// VALIDATION:
 		boolean validation = false;
 		
-		
-
 		if (cardMoved != null) {
 			/*
 			 *  not buildablePile.empty()
@@ -112,19 +110,19 @@ public class FoundationMove extends Move {
 				 * The suit is not spades.
 				 */
 				
-				if(foundation.empty() && cardMoved.getRank()==Card.KING){
-					validation = false; // place the King
+				if(foundation.empty() && cardMoved.getRank()!=Card.KING){
+					validation = false; 
 				}
 				
 //				//figure out which foundation the King is being dragged to
-//				if(foundation.equals(bisley.kings[1]) && cardMoved.getSuit()==Card.CLUBS && cardMoved.getRank()==Card.KING){
-//					validation = false;
-//				}else if (foundation.equals(bisley.kings[2]) && cardMoved.getSuit()==Card.DIAMONDS && cardMoved.getRank()==Card.KING) {
-//					validation = false;
-//				}else if (foundation.equals(bisley.kings[3]) && cardMoved.getSuit()==Card.HEARTS && cardMoved.getRank()==Card.KING){
-//					validation = false;
-//				}else if (foundation.equals(bisley.kings[4]) && cardMoved.getSuit()==Card.SPADES && cardMoved.getRank()==Card.KING){
-//					validation = false;
+//				if(foundation == bisley.kings[1] && cardMoved.getSuit() == Card.CLUBS && cardMoved.getRank()==Card.KING){
+//					validation = true;
+//				}else if (foundation == bisley.kings[2] && cardMoved.getSuit() == Card.DIAMONDS && cardMoved.getRank()==Card.KING) {
+//					validation = true;
+//				}else if (foundation == bisley.kings[3] && cardMoved.getSuit() == Card.HEARTS && cardMoved.getRank()==Card.KING){
+//					validation = true;
+//				}else if (foundation == bisley.kings[4] && cardMoved.getSuit() == Card.SPADES && cardMoved.getRank()==Card.KING){
+//					validation = true;
 //				}
 
 					

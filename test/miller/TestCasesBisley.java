@@ -1,9 +1,5 @@
 package miller;
 
-import heineman.klondike.FlipCardMove;
-import heineman.klondike.MoveColumnMove;
-import heineman.klondike.MoveWasteToPileMove;
-
 import java.awt.event.MouseEvent;
 
 import miller.Bisley;
@@ -54,6 +50,7 @@ public class TestCasesBisley extends KSTestCase {
 		fm.undo(bisley); //undo the foundation move
 		assertEquals(topCard, bisley.tableau[11].peek());//verify that the topCard has been moved back to the tableau foundation (if true)
 		assertEquals(0, bisley.getScoreValue());	
+
 	}
 	
 	public void testFoundationMoveToAceFalse(){
@@ -68,6 +65,7 @@ public class TestCasesBisley extends KSTestCase {
 		fm.doMove(bisley); //actually do the foundation move
 		assertEquals(0, bisley.getScoreValue()); //verify that the score has been updated to 0
 		assertEquals(topCard, bisley.tableau[12].peek());//verify that the topCard has been moved back to its origin tableau	
+
 		
 	}
 	
@@ -109,23 +107,21 @@ public class TestCasesBisley extends KSTestCase {
 		FoundationMove fm = new FoundationMove(bisley,bisley.tableau[2], topCard, bisley.kings[3], false); //try to move the card to the foundation
 		assertTrue(fm.valid(bisley));
 		fm.doMove(bisley);
-		assertEquals(1, bisley.getScoreValue());
-
-				
+		assertEquals(1, bisley.getScoreValue());				
 	}
 	
 	public void testTableauToTableauMove(){
-		setUp();
+		bisley = new Bisley();
+		gw = Main.generateWindow(bisley, Deck.OrderBySuit);
 		
 		Card topCard = bisley.tableau[1].peek();
 		TableauToTableauMove ttm = new TableauToTableauMove(bisley.tableau[1], topCard, bisley.tableau[9]);
 		assertTrue(ttm.valid(bisley));
 		
 		ttm.doMove(bisley);
-		//assertEquals(topCard,bisley.tableau[9].peek());
+		assertEquals(2,bisley.tableau[9].count());
 		ttm.undo(bisley);
-		//assertEquals(topCard, bisley.tableau[1].peek());
-		
+			
 		ttm = new TableauToTableauMove(bisley.tableau[1], topCard, bisley.tableau[2]);
 		assertFalse(ttm.valid(bisley));
 		
@@ -139,10 +135,6 @@ public class TestCasesBisley extends KSTestCase {
 		ttm.doMove(bisley);
 		assertEquals(topCard, bisley.tableau[2].peek());
 				
-	}
-	
-	public void testBuildablePileController(){
-
 	}
 	
 	public void testMoveColumnMove(){
@@ -169,39 +161,28 @@ public class TestCasesBisley extends KSTestCase {
 
 		assertEquals (4, bisley.tableau[1].count());
 
-		bisley.getContainer().repaint();
-		
+		bisley.getContainer().repaint();	
 		
 	}
 	
 	public void testTableauToTableauController(){
+		setUp();
 		
-//		//false event. card will not be moved
-//		// first create a mouse event on 7th tableau 
-//		MouseEvent pr = createPressed (bisley, bisley.tableauView[7], 0, 0);
-//		bisley.tableauView[7].getMouseManager().handleMouseEvent(pr);
-//
-//		// drop on the first column
-//		MouseEvent rel = createReleased (bisley, bisley.tableauView[1], 0, 0);
-//		bisley.tableauView[1].getMouseManager().handleMouseEvent(rel);
-//		
-//		// verify that the 7th tableau still has 4 cards (cannot place 7S on 10D)
-//		assertEquals (4, bisley.tableau[7].count());
-//		assertEquals(4, bisley.tableau[1].count());
-//		
-//		
-//		//true event. card will be moved
-//		// first create a mouse event on 7th tableau 
-//		pr = createPressed (bisley, bisley.tableauView[6], 0, 0);
-//		bisley.tableauView[7].getMouseManager().handleMouseEvent(pr);
-//
-//		// drop on the first column
-//		rel = createReleased (bisley, bisley.tableauView[5], 0, 0);
-//		bisley.tableauView[1].getMouseManager().handleMouseEvent(rel);
-//		
-//		// verify that the 7th tableau still has 4 cards (cannot place 7S on 10D)
-//		assertEquals (4, bisley.tableau[6].count());
-//		assertEquals(4, bisley.tableau[5].count());
+		//false event. card will not be moved (press only)
+		// first create a mouse event on 7th tableau 
+		MouseEvent pr = createPressed (bisley, bisley.tableauView[7], 0, 0);
+		bisley.tableauView[7].getMouseManager().handleMouseEvent(pr);
+
+		// drop on the first column
+		MouseEvent rel = createReleased (bisley, bisley.tableauView[1], 0, 0);
+		bisley.tableauView[1].getMouseManager().handleMouseEvent(rel);
+		
+		// verify that a press doesn't modify a tableau pile
+		assertEquals (4, bisley.tableau[7].count());
+		assertEquals(4, bisley.tableau[1].count());
+		
+		//false event. card will not be moved (drag, but with false move validation)
+		
 		
 		
 	}

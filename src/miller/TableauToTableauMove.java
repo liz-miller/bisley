@@ -33,7 +33,6 @@ public class TableauToTableauMove extends Move {
         if (valid(game) == false) { return false; }
 
 		// EXECUTE:add top card of the starting tableau to the top of the ending tableau
-        //cardMoved = ;
         end.add(cardMoved);
         
         return true;
