@@ -46,10 +46,12 @@ public class TestCasesBisley extends KSTestCase {
 		fm.doMove(bisley); //actually do the foundation move
 		assertEquals(1, bisley.getScoreValue()); //verify that the score has been updated to 1
 		assertEquals(topCard, bisley.aces[3].peek());//verify that the topCard has been moved to the ace foundation (if true)
+		bisley.getContainer().repaint();
 		
 		fm.undo(bisley); //undo the foundation move
 		assertEquals(topCard, bisley.tableau[11].peek());//verify that the topCard has been moved back to the tableau foundation (if true)
-		assertEquals(0, bisley.getScoreValue());	
+		assertEquals(0, bisley.getScoreValue());
+		bisley.getContainer().repaint();
 
 	}
 	
@@ -65,6 +67,7 @@ public class TestCasesBisley extends KSTestCase {
 		fm.doMove(bisley); //actually do the foundation move
 		assertEquals(0, bisley.getScoreValue()); //verify that the score has been updated to 0
 		assertEquals(topCard, bisley.tableau[12].peek());//verify that the topCard has been moved back to its origin tableau	
+		bisley.getContainer().repaint();
 
 		
 	}
@@ -76,27 +79,38 @@ public class TestCasesBisley extends KSTestCase {
 		//try to move the KH to KH foundation
 		FoundationMove fm = new FoundationMove(bisley,bisley.tableau[2], topCard, bisley.kings[3], false); //try to move the card to the foundation
 		assertTrue(fm.valid(bisley));
+		bisley.getContainer().repaint();
 
 		fm.doMove(bisley); //actually do the foundation move
 		assertEquals(1, bisley.getScoreValue()); //verify that the score has been updated to 1
 		assertEquals(topCard, bisley.kings[3].peek());//verify that the topCard has been moved to the ace foundation (if true)
+		bisley.getContainer().repaint();
 			
 		fm.undo(bisley); //undo the foundation move
 		assertEquals(topCard, bisley.tableau[2].peek());//verify that the topCard has been moved back to its origin tableau	
-		assertEquals(0, bisley.getScoreValue());	
+		assertEquals(0, bisley.getScoreValue());
+		bisley.getContainer().repaint();
 		
 	}
 	
 	public void testFoundationMoveToKingFalse(){
-//		setUp();
-//		
-//		Card topCard = bisley.tableau[2].peek();
-//		FoundationMove fm = new FoundationMove(bisley,bisley.tableau[2],topCard, bisley.kings[1],false);
-//		assertFalse(fm.valid(bisley));
-//		
-//		fm.doMove(bisley);
-//		assertEquals(topCard, bisley.tableau[2].peek());
-				
+		setUp();
+		
+		Card topCard = bisley.tableau[2].peek();
+		FoundationMove fm = new FoundationMove(bisley,bisley.tableau[2], topCard, bisley.kings[1],false);
+			
+		fm.doMove(bisley);
+		assertEquals(topCard, bisley.tableau[2].peek());
+		bisley.getContainer().repaint();
+		
+		topCard = bisley.tableau[1].peek();
+		FoundationMove fmm = new FoundationMove(bisley, bisley.tableau[1], topCard, bisley.kings[1],false);
+		//assertTrue(fmm.valid(bisley));
+		//bisley.getContainer().repaint();
+		
+		fmm.doMove(bisley);
+		assertEquals(topCard, bisley.tableau[1].peek());
+		bisley.getContainer().repaint();
 	}
 		
 	public void testAutoMove(){
