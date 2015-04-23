@@ -142,7 +142,7 @@ public class FoundationMove extends Move {
 					}
 					// The suit is not spades.
 					if(foundation.suit()==Card.SPADES){
-						validation = false;
+						validation = true;
 					}
 				}
 		}

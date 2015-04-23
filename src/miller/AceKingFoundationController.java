@@ -111,9 +111,9 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 					}else if(col.peek().getSuit() == Card.SPADES && foundation == theGame.kings[4]){
 						checkKings = true;
 					}
-				}
+				} 
 
-				if(isAce){
+				if(isAce && tableau.peek().getRank()!=Card.KING){ //going to Ace foundation and isn't a KING.
 					if (m.doMove (theGame)) {
 						// Success
 						theGame.pushMove (m);			
@@ -121,7 +121,7 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 							theGame.kings[tableau.peek().getSuit()].add(tableau.get());
 						}
 						theGame.refreshWidgets();
-					} else {
+						} else {
 						fromWidget.returnWidget (draggingWidget);
 					}
 				}else if(!isAce && checkKings){
