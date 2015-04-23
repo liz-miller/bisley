@@ -98,7 +98,7 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 			if (col.count() != 1) {
 				fromWidget.returnWidget (draggingWidget);  // return home
 			} else {
-				Move m = new FoundationMove (tableau, col.peek(), foundation, isAce);
+				Move m = new FoundationMove (theGame, tableau, col.peek(), foundation, isAce);
 
 				if (m.doMove (theGame)) {
 					// Success
@@ -125,7 +125,7 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 			}
 
 			// must use peek() so we don't modify col prematurely
-			Move m = new FoundationMove (tableau, theCard, foundation, isAce);
+			Move m = new FoundationMove (theGame, tableau, theCard, foundation, isAce);
 			if (m.doMove (theGame)) {
 				// Success
 				theGame.pushMove (m);

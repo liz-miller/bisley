@@ -7,12 +7,14 @@ import ks.common.model.Move;
 import ks.common.model.Pile;
 
 public class FoundationMove extends Move {
+	Bisley bisley;
 	BuildablePile tableau;
 	Card cardMoved;
 	Pile foundation;
 	boolean isAce;
 	
-	public FoundationMove(BuildablePile tableau, Card cardMoved, Pile foundation, boolean isAce){
+	public FoundationMove(Bisley bisley, BuildablePile tableau, Card cardMoved, Pile foundation, boolean isAce){
+		this.bisley = bisley;
 		this.tableau = tableau;
 		this.cardMoved = cardMoved;
 		this.foundation = foundation;
@@ -103,16 +105,28 @@ public class FoundationMove extends Move {
 				}
 			} else if (!isAce){
 				/* 
-				 * Verify the following:
+				 * Verify the following: 
 				 * 
 				 * The card's rank is 1 less than the King foundation's rank.
 				 * The card and the foundation have the same suit.
 				 * The suit is not spades.
 				 */
 				
-				if(foundation.empty() && cardMoved.getSuit()!=Card.KING){
+				if(foundation.empty() && cardMoved.getRank()==Card.KING){
 					validation = false; // place the King
 				}
+				
+//				//figure out which foundation the King is being dragged to
+//				if(foundation.equals(bisley.kings[1]) && cardMoved.getSuit()==Card.CLUBS && cardMoved.getRank()==Card.KING){
+//					validation = false;
+//				}else if (foundation.equals(bisley.kings[2]) && cardMoved.getSuit()==Card.DIAMONDS && cardMoved.getRank()==Card.KING) {
+//					validation = false;
+//				}else if (foundation.equals(bisley.kings[3]) && cardMoved.getSuit()==Card.HEARTS && cardMoved.getRank()==Card.KING){
+//					validation = false;
+//				}else if (foundation.equals(bisley.kings[4]) && cardMoved.getSuit()==Card.SPADES && cardMoved.getRank()==Card.KING){
+//					validation = false;
+//				}
+
 					
 				if ((cardMoved.getRank() == foundation.rank() - 1) && (cardMoved.getSuit() == foundation.suit())){
 	

@@ -62,6 +62,7 @@ public class Bisley extends Solitaire {
 		aces[2].add(ace2);
 		aces[3].add(ace3);
 		aces[4].add(ace4);
+
 		
 		for (int pileNum=1; pileNum < 10; pileNum++){
 			for (int i=0; i<=3; i++){
@@ -74,8 +75,12 @@ public class Bisley extends Solitaire {
 					
 					//System.out.println("Adding (" + c.getSuit() + ", " + c.getRank() + ") to tableau " + pileNum);
 					tableau[pileNum].add(c);
+					
 				}
 			}
+//			if(!tableau[pileNum].empty() && tableau[pileNum].peek().getRank()==Card.KING){
+//				kings[tableau[pileNum].peek().getSuit()].add(tableau[pileNum].get());
+//			}
 		
 		}
 		
@@ -90,8 +95,12 @@ public class Bisley extends Solitaire {
 					
 					//System.out.println("Adding (" + c.getSuit() + ", " + c.getRank() + ") to tableau " + pileNum);
 					tableau[pileNum].add(c);
+		
 				}
 			}
+//			if(!tableau[pileNum].empty() && tableau[pileNum].peek().getRank()==Card.KING){
+//				kings[tableau[pileNum].peek().getSuit()].add(tableau[pileNum].get());
+//			} 
 		
 		}
 		updateNumberCardsLeft(-52);

@@ -49,7 +49,7 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 				Pile fp = (Pile) theGame.getModelElement ("foundation" + f);
 				if(theBP.peek().getRank()==Card.ACE)
 					isAce = true;		
-				Move m = new FoundationMove (theBP, theBP.peek(), fp,isAce);
+				Move m = new FoundationMove (theGame, theBP, theBP.peek(), fp,isAce);
 				if (m.doMove(theGame)) {
 
 					// Success! Add this move to our history.
