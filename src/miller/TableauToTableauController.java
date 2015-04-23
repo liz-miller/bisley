@@ -30,43 +30,7 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 		this.theGame = theGame;
 		this.src = bpv;
 	}
-	/**
-	 * Try to play the faceup card directly to the foundation.
-	 *
-	 * @param me java.awt.event.MouseEvent
-	 */
-	public void mouseClicked(MouseEvent me) {
 
-		if(me.getClickCount() > 1) {
-
-			// Point to our underlying model element.
-			BuildablePile theBP = (BuildablePile) src.getModelElement();
-			boolean isAce = false;
-
-			// See if we can move this one card.
-			boolean moveMade = false;
-			for (int f = 1; f <=4; f++) {
-				Pile fp = (Pile) theGame.getModelElement ("foundation" + f);
-				if(theBP.peek().getRank()==Card.ACE)
-					isAce = true;		
-				Move m = new FoundationMove (theGame, theBP, theBP.peek(), fp,isAce);
-				if (m.doMove(theGame)) {
-
-					// Success! Add this move to our history.
-					theGame.pushMove (m);
-					moveMade = true;
-					theGame.refreshWidgets();
-					
-					break;
-				}
-			}
-
-			if (!moveMade) {
-				java.awt.Toolkit.getDefaultToolkit().beep();
-				return; // announce our displeasure			
-			}
-		}
-	}
 	/**
 	 * Coordinate reaction to the beginning of a Drag Event.
 	 *
@@ -91,20 +55,6 @@ public class TableauToTableauController extends java.awt.event.MouseAdapter {
 		if (theBP.count() == 0) {
 			return;
 		}
-
-		// No Face Up cards means that we must be requesting to flip a card.
-		// If we get here, we must have some cards in the BuildablePile
-//		if (theBP.getNumFaceUp() == 0) {
-//			Move m = new FlipCardMove (theBP);
-//			if (m.doMove(theGame)) {
-//				theGame.pushMove (m);
-//				theGame.refreshWidgets();
-//			} else {
-//				// error in flip card. Not sure what to do
-//				System.err.println ("BuildablePileController::mousePressed(). Unexpected failure in flip card.");
-//			}
-//			return;
-//		}
 
 		// Get a column of cards to move from the BuildablePileView
 		// Note that this method will alter the model for BuildablePileView if the condition is met.

@@ -75,12 +75,9 @@ public class Bisley extends Solitaire {
 					
 					//System.out.println("Adding (" + c.getSuit() + ", " + c.getRank() + ") to tableau " + pileNum);
 					tableau[pileNum].add(c);
-					
+			
 				}
 			}
-//			if(!tableau[pileNum].empty() && tableau[pileNum].peek().getRank()==Card.KING){
-//				kings[tableau[pileNum].peek().getSuit()].add(tableau[pileNum].get());
-//			}
 		
 		}
 		

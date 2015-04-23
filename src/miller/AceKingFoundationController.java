@@ -90,7 +90,7 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 				c.releaseDraggingObject();			
 				return;
 			}
-
+ 
 			// must use peek() so we don't modify col prematurely. Here is a HACK! Presumably
 			// we only want the Move object to know things about the move, but we have to put
 			// in a check to verify that Column is of size one. NO good solution that I can

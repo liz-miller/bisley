@@ -74,16 +74,16 @@ public class FoundationMove extends Move {
 			 * not buildablePile.empty()
 			 * tableau.rank() == KING
 			 */
-			if (cardMoved.getRank() == Card.KING){
-				validation = true;  
-		    }else {
+//			if (cardMoved.getRank() == Card.KING){
+//				validation = true;  
+//		    }else {
 			/* 
 			 * Verify the following:
 			 * Ace foundation is not empty.
 			 * The card's rank is 1 greater than the Ace foundation's rank.
 			 * The card and the foundation have the same suit.
 			 */	
-			if (isAce && (cardMoved.getRank() == foundation.rank() + 1) && (cardMoved.getSuit() == foundation.suit())){
+			if (isAce && (cardMoved.getRank() == foundation.rank() + 1) && (cardMoved.getSuit() == foundation.suit() && cardMoved.getRank()!=Card.KING)){
 	
 				// Hearts: build up to 4
 				if(cardMoved.getSuit()==Card.HEARTS && foundation.rank() <=4){
@@ -126,28 +126,28 @@ public class FoundationMove extends Move {
 //				}
 
 					
-				if ((cardMoved.getRank() == foundation.rank() - 1) && (cardMoved.getSuit() == foundation.suit())){
+				if (!foundation.empty() && (cardMoved.getRank() == foundation.rank() - 1) && (cardMoved.getSuit() == foundation.suit())){
 	
 					// Hearts: build down to 5
-					if(cardMoved.getSuit()==Card.HEARTS && foundation.rank() >=5){
-						validation = true;
+					if(cardMoved.getSuit()==Card.HEARTS && (cardMoved.getRank() >=5 || cardMoved.getRank()<=13)){
+						validation = false;
 					}
 					// Diamonds: build down to 9
-					if(cardMoved.getSuit()==Card.DIAMONDS && foundation.rank()>=9){
-						validation = true;
+					if(cardMoved.getSuit()==Card.DIAMONDS && (cardMoved.getRank()>=9 || cardMoved.getRank()<=13)){
+						validation = false;
 					}
-					// Clubs: build down to 2a
-					if(cardMoved.getSuit()==Card.CLUBS && foundation.rank()>=2){
-						validation = true;
+					// Clubs: build down to 2
+					if(cardMoved.getSuit()==Card.CLUBS && (cardMoved.getRank()>=2 || cardMoved.getRank()<=13)){
+						validation = false;
 					}
 					// The suit is not spades.
 					if(foundation.suit()==Card.SPADES){
-						validation = true;
+						validation = false;
 					}
 				}
 		}
 	 }
-	}
+	
 		return validation;
 }
 }

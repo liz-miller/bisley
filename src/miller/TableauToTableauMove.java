@@ -30,7 +30,7 @@ public class TableauToTableauMove extends Move {
 	public boolean doMove (Solitaire game) {
 
 		// VALIDATE:
-        if (valid(game) == false) { return false; }
+		if (valid (game) == false){ return false; }
 
 		// EXECUTE:add top card of the starting tableau to the top of the ending tableau
         end.add(cardMoved);
@@ -41,9 +41,11 @@ public class TableauToTableauMove extends Move {
 	@Override
 	public boolean undo(Solitaire game) {
 		// EXECUTE:add top card of the ending tableau to the top of the starting tableau
-		//cardMoved = end.get();
+		if (end.empty()) { return false; }
+		
 		start.add(end.get());
 		return true;
+
 	}
 
 	@Override
