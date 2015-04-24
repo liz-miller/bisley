@@ -5,7 +5,7 @@ Liz Miller
 liz.miller11@gmail.com
 4/23/15
 
-To obtain the latest version of the miller_bisley project, please visit the release page (https://github.com/liz-miller/bisley/releases) and download the source code (zip or tar.gz) Release v1.1.
+To obtain the latest version of the miller_bisley project, please visit the release page (https://github.com/liz-miller/bisley/releases) and download the source code (zip or tar.gz) Release v1.1-s.
 
 Note that this code depends on the SolitairePluginTutorial available on the WPI FusionForge SVN for CS3733.
 
