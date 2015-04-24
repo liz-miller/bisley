@@ -1,6 +1,5 @@
 package miller;
-import heineman.klondike.MoveCardToFoundationMove;
-import heineman.klondike.MoveWasteToFoundationMove;
+
 
 import java.awt.event.MouseEvent;
 
@@ -90,7 +89,7 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 				c.releaseDraggingObject();			
 				return;
 			}
- 
+
 			// must use peek() so we don't modify col prematurely. Here is a HACK! Presumably
 			// we only want the Move object to know things about the move, but we have to put
 			// in a check to verify that Column is of size one. NO good solution that I can
@@ -99,46 +98,18 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 				fromWidget.returnWidget (draggingWidget);  // return home
 			} else {
 				Move m = new FoundationMove (theGame, tableau, col.peek(), foundation, isAce);
-				boolean checkKings = false;
-				
-				if(col.peek().getRank() == Card.KING){
-					if(col.peek().getSuit() == Card.CLUBS && foundation == theGame.kings[1]){
-						checkKings = true;
-					}else if(col.peek().getSuit() == Card.DIAMONDS && foundation == theGame.kings[2]){
-						checkKings = true;
-					}else if(col.peek().getSuit() == Card.HEARTS && foundation == theGame.kings[3]){
-						checkKings = true;
-					}else if(col.peek().getSuit() == Card.SPADES && foundation == theGame.kings[4]){
-						checkKings = true;
-					}
-				} 
 
-				if(isAce && tableau.peek().getRank()!=Card.KING){ //going to Ace foundation and isn't a KING.
-					if (m.doMove (theGame)) {
-						// Success
-						theGame.pushMove (m);			
-						if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
-							theGame.kings[tableau.peek().getSuit()].add(tableau.get());
-						}
-						theGame.refreshWidgets();
-						} else {
-						fromWidget.returnWidget (draggingWidget);
+				if (m.doMove (theGame)) {
+					// Success
+					theGame.pushMove (m);			
+					if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
+						theGame.kings[tableau.peek().getSuit()].add(tableau.get());
 					}
-				}else if(!isAce && checkKings){
-					if (m.doMove (theGame)){
-						// Success
-						theGame.pushMove (m);			
-						if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
-							theGame.kings[tableau.peek().getSuit()].add(tableau.get());
-						}
-						theGame.refreshWidgets();
-						}else{
-							fromWidget.returnWidget (draggingWidget);
-						}
-					}else{
-						tableau.add(col.get());//return card back to its starting tableau
-					}
+					theGame.refreshWidgets();
+				} else {
+					fromWidget.returnWidget (draggingWidget);
 				}
+			}
 		} else {
 			// Dragging 1 card from the tableau
 			BuildablePile tableau = (BuildablePile) fromWidget.getModelElement();
@@ -153,46 +124,17 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 			}
 
 			// must use peek() so we don't modify col prematurely
-			Move m = new FoundationMove (theGame, tableau, theCard, foundation, isAce);
-			boolean checkKings = false;
-			
-			if(theCard.getRank() == Card.KING){
-				if(theCard.getSuit() == Card.CLUBS && foundation == theGame.kings[1]){
-					checkKings = true;
-				}else if(theCard.getSuit() == Card.DIAMONDS && foundation == theGame.kings[2]){
-					checkKings = true;
-				}else if(theCard.getSuit() == Card.HEARTS && foundation == theGame.kings[3]){
-					checkKings = true;
-				}else if(theCard.getSuit() == Card.SPADES && foundation == theGame.kings[4]){
-					checkKings = true;
+			Move m = new FoundationMove (theGame,tableau, theCard, foundation, isAce);
+			if (m.doMove (theGame)) {
+				// Success
+				theGame.pushMove (m);
+				if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
+					theGame.kings[tableau.peek().getSuit()].add(tableau.get());
 				}
+				theGame.refreshWidgets();
+			} else {
+				fromWidget.returnWidget (draggingWidget);
 			}
-
-			if(isAce){
-				if (m.doMove (theGame)) {
-					// Success
-					theGame.pushMove (m);			
-					if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
-						theGame.kings[tableau.peek().getSuit()].add(tableau.get());
-					}
-					theGame.refreshWidgets();
-				} else {
-					fromWidget.returnWidget (draggingWidget);
-				}
-			}else if(!isAce && checkKings){
-				if (m.doMove (theGame)){
-					// Success
-					theGame.pushMove (m);			
-					if(!tableau.empty() && tableau.peek().getRank()==Card.KING){
-						theGame.kings[tableau.peek().getSuit()].add(tableau.get());
-					}
-					theGame.refreshWidgets();
-					}else{
-						fromWidget.returnWidget (draggingWidget);
-					}
-				}else{
-					tableau.add(theCard);//return card back to its starting tableau
-				}
 		}
 
 		// Ahhhh. Instead of dealing with multiple 'instanceof' difficulty, why don't we allow
@@ -211,3 +153,4 @@ public class AceKingFoundationController extends java.awt.event.MouseAdapter {
 		c.repaint();
 	}
 }
+

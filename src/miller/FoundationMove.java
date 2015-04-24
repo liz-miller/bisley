@@ -57,7 +57,20 @@ public class FoundationMove extends Move {
 	public boolean valid(Solitaire game) {
 		// VALIDATION:
 		boolean validation = false;
-		
+		boolean checkKings = false; 
+//		
+//		if(cardMoved.getSuit() == Card.CLUBS && foundation == bisley.kings[1]){
+//			checkKings = true;
+//		}else if(cardMoved.getSuit() == Card.DIAMONDS && foundation == bisley.kings[2]){
+//			checkKings = true;
+//		}else if(cardMoved.getSuit() == Card.HEARTS && foundation == bisley.kings[3]){
+//			checkKings = true;
+//		}else if(cardMoved.getSuit() == Card.SPADES && foundation == bisley.kings[4]){
+//			checkKings = true;
+//		} 
+//
+//		if(isAce && tableau.peek().getRank()!=Card.KING){ //going to Ace foundation and isn't a KING.
+//		
 		if (cardMoved != null) {
 			/*
 			 *  not buildablePile.empty()
@@ -114,18 +127,7 @@ public class FoundationMove extends Move {
 					validation = false; 
 				}
 				
-//				//figure out which foundation the King is being dragged to
-//				if(foundation == bisley.kings[1] && cardMoved.getSuit() == Card.CLUBS && cardMoved.getRank()==Card.KING){
-//					validation = true;
-//				}else if (foundation == bisley.kings[2] && cardMoved.getSuit() == Card.DIAMONDS && cardMoved.getRank()==Card.KING) {
-//					validation = true;
-//				}else if (foundation == bisley.kings[3] && cardMoved.getSuit() == Card.HEARTS && cardMoved.getRank()==Card.KING){
-//					validation = true;
-//				}else if (foundation == bisley.kings[4] && cardMoved.getSuit() == Card.SPADES && cardMoved.getRank()==Card.KING){
-//					validation = true;
-//				}
-
-					
+				
 				if (!foundation.empty() && (cardMoved.getRank() == foundation.rank() - 1) && (cardMoved.getSuit() == foundation.suit())){
 	
 					// Hearts: build down to 5

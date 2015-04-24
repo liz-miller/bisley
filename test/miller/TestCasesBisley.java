@@ -5,10 +5,12 @@ import java.awt.event.MouseEvent;
 import vfinal.NarcoticFinal;
 import miller.Bisley;
 import ks.client.gamefactory.GameWindow;
+import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Deck;
 import ks.common.model.Move;
+import ks.common.model.Pile;
 import ks.common.view.ColumnView;
 import ks.common.view.Container;
 import ks.common.view.Widget;
@@ -33,12 +35,10 @@ public class TestCasesBisley extends KSTestCase {
 		gw.dispose();
 	}
 	
-	/*
-	 * 
+	/**
+	 * Tests the initialization of the Bisley solitaire game.
 	 */
 	public void testInitialize(){
-		setUp();
-		
 		//verify that aces start in the assigned ace foundation
 		Card aces1 = bisley.aces[1].peek();
 		Card aces2 = bisley.aces[2].peek();
@@ -71,9 +71,10 @@ public class TestCasesBisley extends KSTestCase {
 		
 	} 
 	
+	/**
+	 * 
+	 */
 	public void testFoundationMoveToAceTrue(){
-		setUp();
-
 		// Move tableau to Ace Foundation (Case is true)
 		Card topCard = bisley.tableau[11].peek(); //look at the 2H on tableau 11
 		//try to move the 2H to AH foundation
@@ -128,10 +129,10 @@ public class TestCasesBisley extends KSTestCase {
 
 	}
 	
-	
+	/**
+	 * 
+	 */
 	public void testFoundationMoveToAceFalse(){
-		
-		setUp();
 		//Case: Move tableau to Ace Foundation (Case is false)
 		Card topCard = bisley.tableau[12].peek(); //look at the 6C on tableau 12
 		//try to move the 6C to AH foundation
@@ -153,16 +154,14 @@ public class TestCasesBisley extends KSTestCase {
 		fm.doMove(bisley);
 		assertEquals("AD",bisley.aces[2].peek().toString());
 		bisley.getContainer().repaint();
-		
-
-		
-		
+			
 	}
 	
 	
-	
+	/**
+	 * 
+	 */
 	public void testFoundationMoveToKingTrue(){
-		setUp();
 		//Case: Move tableau to Empty King Foundation (Case is true)
 		Card topCard = bisley.tableau[2].peek(); //look at the KH on tableau 2
 		//try to move the KH to KH foundation
@@ -191,12 +190,12 @@ public class TestCasesBisley extends KSTestCase {
 		assertEquals("JC",bisley.kings[1].peek().toString());
 		bisley.getContainer().repaint();
 		
-		
 	}
 	
+	/**
+	 * 
+	 */
 	public void testFoundationMoveToKingFalse(){
-		setUp();
-		
 		Card topCard = bisley.tableau[2].peek();
 		FoundationMove fm = new FoundationMove(bisley,bisley.tableau[2], topCard, bisley.kings[1],false);
 			
@@ -292,9 +291,11 @@ public class TestCasesBisley extends KSTestCase {
 		
 		
 	}
-		
+	
+	/**
+	 * 
+	 */
 	public void testAutoMove(){
-		setUp();
 		//Case: Move tableau to King Foundation (Case is true)
 		Card topCard = bisley.tableau[2].peek(); //look at the KH on tableau 2
 		//try to move the KH to KH foundation
@@ -304,6 +305,9 @@ public class TestCasesBisley extends KSTestCase {
 		assertEquals(1, bisley.getScoreValue());				
 	}
 	
+	/**
+	 * 
+	 */
 	public void testWon(){
 		ModelFactory.init(bisley.aces[1], "AC");
 		ModelFactory.init(bisley.aces[2], "AD 2D 3D 4D 5D 6D 7D 8D"); 
@@ -324,10 +328,10 @@ public class TestCasesBisley extends KSTestCase {
 		assertEquals(44, bisley.getScoreValue());
 	}
 	
-	public void testTableauToTableauMove(){
-		bisley = new Bisley();
-		gw = Main.generateWindow(bisley, Deck.OrderBySuit);
-		
+	/**
+	 * 
+	 */
+	public void testTableauToTableauMove(){	
 		//Case: Move 10D card from tableau 1 to JD tableau 9
 		Card topCard = bisley.tableau[1].peek();
 		TableauToTableauMove ttm = new TableauToTableauMove(bisley.tableau[1], topCard, bisley.tableau[9]);
@@ -413,8 +417,10 @@ public class TestCasesBisley extends KSTestCase {
 
 	} 
 	
+	/**
+	 * 
+	 */
 	public void testMoveColumnMove(){
-		setUp();
 		// first create a mouse event
 		MouseEvent pr = createPressed (bisley, bisley.tableauView[1], 0, 0);
 		for (int i = 1; i < 13; i++) {
@@ -435,37 +441,46 @@ public class TestCasesBisley extends KSTestCase {
 		mcm = new MoveColumnMove (bisley.tableau[7], bisley.tableau[1], (Column) cv.getModelElement(), 1); 
 		assertFalse(mcm.doMove(bisley));
 		assertTrue(mcm.undo(bisley));
-
 		assertEquals (3, bisley.tableau[1].count());
+		
+		mcm = new MoveColumnMove (bisley.tableau[7], bisley.tableau[1], (Column) cv.getModelElement(), 3); 
+		assertFalse(mcm.doMove(bisley));
+		assertTrue(mcm.undo(bisley));
+
+		assertEquals (0, bisley.tableau[1].count());
 
 		bisley.getContainer().repaint();	
+		bisley.tableau[4].removeAll();
+		mcm = new MoveColumnMove (bisley.tableau[4], bisley.tableau[7], (Column) cv.getModelElement(), 1); 
+		assertFalse(mcm.doMove(bisley));
 		
 	}
 	
-	public void testAceKingFoundationController(){
-		setUp();
-		
-		//Case: Move card to ace Foundation
-		MouseEvent press = createPressed (bisley, bisley.tableauView[11], 0, 0);
-		bisley.tableauView[11].getMouseManager().handleMouseEvent(press);
-		
-		assertEquals ("2H", bisley.tableau[11].peek().toString());
-		assertEquals("AH", bisley.aces[3].peek().toString());
-		
-		// release onto tableau 1
-		MouseEvent release = createReleased (bisley, bisley.acesViews[3], 0, 0);
-		bisley.acesViews[3].getMouseManager().handleMouseEvent(release);
+	/**
+	 * 
+	 */
+	public void testAceKingFoundationController(){		
+		ModelFactory.init(bisley.tableau[1], "4D 3C 4S 2H");
+		ModelFactory.init(bisley.aces[3], "AH");
 
-		// move is made.
-		assertEquals(3, bisley.tableau[11].count());
-		assertEquals("AH", bisley.aces[3].peek().toString());
-
-
+		int overlap =bisley.getCardImages().getOverlap();
+		
+		// press on tableau 1
+		MouseEvent me = createPressed (bisley, bisley.tableauView[1], 3*overlap, 3*overlap);
+		bisley.tableauView[1].getMouseManager().handleMouseEvent(me);
+		
+		// Release mouse on ace foundation
+		MouseEvent rel = createReleased (bisley, bisley.acesViews[3], 0, 0);
+		bisley.acesViews[3].getMouseManager().handleMouseEvent(rel);
+		
+		assertEquals (3, bisley.tableau[1].count()); //verify that the 2H has been moved to the AH foundation.
 
 	}   
-	
+	/**
+	 * 
+	 */
 	public void testTableauToTableauController(){
-		setUp();
+		int overlap =bisley.getCardImages().getOverlap();
 		
 		//false event. card will not be moved (press only)
 		// first create a mouse event on 7th tableau 
@@ -489,21 +504,20 @@ public class TestCasesBisley extends KSTestCase {
 		
 		//Case: Move card to tableau (false case, not a match)
 		// press on tableau 2
-		MouseEvent press = createPressed (bisley, bisley.tableauView[2], 15, 15);
+		MouseEvent press = createPressed (bisley, bisley.tableauView[2], 3*overlap, 3*overlap);
 		bisley.tableauView[2].getMouseManager().handleMouseEvent(press);
 		
 		assertEquals ("2H", bisley.tableau[1].peek().toString());
-		assertEquals ("5H", bisley.tableau[2].peek().toString());
+		assertEquals ("5D", bisley.tableau[2].peek().toString());
 		
 		// release onto tableau 1
-		MouseEvent release = createReleased (bisley, bisley.tableauView[1], 15, 15);
+		MouseEvent release = createReleased (bisley, bisley.tableauView[1], 3*overlap, 3*overlap);
 		bisley.tableauView[1].getMouseManager().handleMouseEvent(release);
 
 		// move is made.
 		assertEquals ("2H", bisley.tableau[1].peek().toString());
 		assertEquals ("5H", bisley.tableau[2].peek().toString());
-		
-		
+	
 	}
 
 	
