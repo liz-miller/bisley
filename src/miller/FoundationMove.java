@@ -114,7 +114,7 @@ public class FoundationMove extends Move {
 				if(foundation.suit()==Card.CLUBS){
 					validation = false;
 				}
-			} else if (!isAce){
+			} else if (!isAce){ //going to king foundation
 				/* 
 				 * Verify the following: 
 				 * 
@@ -128,22 +128,22 @@ public class FoundationMove extends Move {
 				}
 				
 				
-				if (!foundation.empty() && (cardMoved.getRank() == foundation.rank() - 1) && (cardMoved.getSuit() == foundation.suit())){
+				if (!foundation.empty() && (cardMoved.getRank() == foundation.rank() - 1) && (cardMoved.getSuit() == foundation.suit() && cardMoved.getRank()!=Card.KING)){
 	
 					// Hearts: build down to 5
 					if(cardMoved.getSuit()==Card.HEARTS && (cardMoved.getRank() >=5 || cardMoved.getRank()<=13)){
-						validation = false;
+						validation = true;
 					}
 					// Diamonds: build down to 9
 					if(cardMoved.getSuit()==Card.DIAMONDS && (cardMoved.getRank()>=9 || cardMoved.getRank()<=13)){
-						validation = false;
+						validation = true;
 					}
 					// Clubs: build down to 2
 					if(cardMoved.getSuit()==Card.CLUBS && (cardMoved.getRank()>=2 || cardMoved.getRank()<=13)){
-						validation = false;
+						validation = true;
 					}
 					// The suit is not spades.
-					if(foundation.suit()==Card.SPADES){
+					if(foundation.suit()==Card.SPADES || cardMoved.getRank()==Card.ACE){
 						validation = false;
 					}
 				}

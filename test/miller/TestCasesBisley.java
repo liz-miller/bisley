@@ -253,11 +253,10 @@ public class TestCasesBisley extends KSTestCase {
 		assertEquals ("4H", bisley.tableau[1].peek().toString());
 
 		fm = new FoundationMove(bisley,bisley.tableau[1],bisley.tableau[1].peek(),bisley.kings[3],false);
-		assertFalse(fm.valid(bisley));
+		assertTrue(fm.valid(bisley));
 
 		fm.doMove(bisley);
-		assertEquals("5H",bisley.kings[3].peek().toString());
-		assertEquals("4H", bisley.tableau[1].peek().toString());
+		assertEquals("4H",bisley.kings[3].peek().toString());
 		bisley.getContainer().repaint();
 		
 		
@@ -268,28 +267,29 @@ public class TestCasesBisley extends KSTestCase {
 		assertEquals ("8D", bisley.tableau[1].peek().toString());
 
 		fm = new FoundationMove(bisley,bisley.tableau[1],bisley.tableau[1].peek(),bisley.kings[2],false);
-		assertFalse(fm.valid(bisley));
+		assertTrue(fm.valid(bisley));
 
 		fm.doMove(bisley);
-		assertEquals("9D",bisley.kings[2].peek().toString());
-		assertEquals("8D", bisley.tableau[1].peek().toString());
+		assertEquals("8D",bisley.kings[2].peek().toString());
 		bisley.getContainer().repaint();
+		
+		fm.undo(bisley);
+		assertEquals("8D",bisley.tableau[1].peek().toString());
 		
 		//Case: Move card to king foundation with King already there (not less than 9 on King of Hearts)
 		ModelFactory.init(bisley.kings[1], "KC QC JC 10C 9C 8C 7C 6C 5C 4C 3C 2C");
 		ModelFactory.init(bisley.tableau[1], "QS 4D 8H AC"); //this case would never happen
 		assertEquals ("2C", bisley.kings[1].peek().toString());
-		assertEquals ("AC", bisley.tableau[1].peek().toString());
 
 		fm = new FoundationMove(bisley,bisley.tableau[1],bisley.tableau[1].peek(),bisley.kings[1],false);
 		assertFalse(fm.valid(bisley));
 
 		fm.doMove(bisley);
-		assertEquals("2C",bisley.kings[1].peek().toString());
+		assertEquals("2C", bisley.kings[1].peek().toString());
 		assertEquals("AC", bisley.tableau[1].peek().toString());
+		
 		bisley.getContainer().repaint();
-		
-		
+	
 	}
 	
 	/**
