@@ -16,6 +16,7 @@ import ks.common.model.Stack;
  * be calculated.
  * <p>
  * @author: George T. Heineman (heineman@cs.wpi.edu)
+ * @author: Liz Miller (modified for Bisley Solitaire Plugin on 4/23/15)
  */
 public class MoveColumnMove extends ks.common.model.Move {
 	/** From BuildablePile. */

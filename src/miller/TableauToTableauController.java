@@ -14,7 +14,12 @@ import ks.common.view.Container;
 import ks.common.view.Widget;
 import miller.Bisley;
 
-
+/**
+ * TableauToTableauController: Controls TableauToTableauMoves.
+ * @param Bisley
+ * @param BuildablePileView
+ * @author Liz Miller
+ */
 public class TableauToTableauController extends java.awt.event.MouseAdapter {
 
 	/** The game that we are partly controlling. */

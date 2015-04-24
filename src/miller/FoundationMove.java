@@ -1,10 +1,21 @@
 package miller;
 
 import ks.common.games.Solitaire;
+
 import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Move;
 import ks.common.model.Pile;
+
+/**
+ * FoundationMove: Moves cards from a BuildablePile to a Pile.
+ * @param Bisley
+ * @param BuildablePile
+ * @param Card
+ * @param Pile
+ * @param boolean
+ * @author Liz Miller
+ */
 
 public class FoundationMove extends Move {
 	Bisley bisley;
@@ -58,19 +69,7 @@ public class FoundationMove extends Move {
 		// VALIDATION:
 		boolean validation = false;
 		boolean checkKings = false; 
-//		
-//		if(cardMoved.getSuit() == Card.CLUBS && foundation == bisley.kings[1]){
-//			checkKings = true;
-//		}else if(cardMoved.getSuit() == Card.DIAMONDS && foundation == bisley.kings[2]){
-//			checkKings = true;
-//		}else if(cardMoved.getSuit() == Card.HEARTS && foundation == bisley.kings[3]){
-//			checkKings = true;
-//		}else if(cardMoved.getSuit() == Card.SPADES && foundation == bisley.kings[4]){
-//			checkKings = true;
-//		} 
-//
-//		if(isAce && tableau.peek().getRank()!=Card.KING){ //going to Ace foundation and isn't a KING.
-//		
+
 		if (cardMoved != null) {
 			/*
 			 *  not buildablePile.empty()

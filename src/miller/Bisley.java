@@ -1,6 +1,7 @@
 package miller;
 
 import java.awt.Dimension;
+
 import ks.common.controller.SolitaireMouseMotionAdapter;
 import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.games.Solitaire;
@@ -16,6 +17,11 @@ import ks.common.view.IntegerView;
 import ks.common.view.PileView;
 import ks.launcher.Main;
 
+/**
+ * Bisley: Main class of the Bisley Solitaire Plugin for CS 3733 A1 assignment
+ * @version v1.1
+ * @author Liz Miller
+ */
 public class Bisley extends Solitaire {
 
 	Deck deck;

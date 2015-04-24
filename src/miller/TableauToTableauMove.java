@@ -7,13 +7,18 @@ import ks.common.model.Card;
 import ks.common.model.Move;
 import ks.common.view.BuildablePileView;
 
-/*
- * Moves a card from a starting tableau buildable pile to a 
- * destination tableau buildable pile if the move is valid.
- * 
- * 4/19/15
- */
 
+/**
+ * TableauToTableauMove: Moves a card from a starting tableau BuildablePile to a 
+ * destination tableau BuildablePile if the move is valid.
+ * 
+ * @param Bisley
+ * @param BuildablePile
+ * @param Card
+ * @param Pile
+ * @param boolean
+ * @author Liz Miller
+ */
 public class TableauToTableauMove extends Move {
 	BuildablePile start;
 	Card cardMoved;

@@ -18,6 +18,11 @@ import ks.launcher.Main;
 import ks.tests.KSTestCase;
 import ks.tests.model.ModelFactory;
 
+/**
+ * TestCasesBisley: Main test class for Bisley Solitaire.
+ * @version v1.1
+ * @author Liz Miller
+ */
 public class TestCasesBisley extends KSTestCase {
 	Bisley bisley;
 	GameWindow gw;
@@ -72,7 +77,7 @@ public class TestCasesBisley extends KSTestCase {
 	} 
 	
 	/**
-	 * 
+	 * Tests the True cases when moving from a Tableau to an Ace Foundation.
 	 */
 	public void testFoundationMoveToAceTrue(){
 		// Move tableau to Ace Foundation (Case is true)
@@ -130,7 +135,7 @@ public class TestCasesBisley extends KSTestCase {
 	}
 	
 	/**
-	 * 
+	 * Tests the False cases when moving from a Tableau to an Ace Foundation.
 	 */
 	public void testFoundationMoveToAceFalse(){
 		//Case: Move tableau to Ace Foundation (Case is false)
@@ -159,7 +164,7 @@ public class TestCasesBisley extends KSTestCase {
 	
 	
 	/**
-	 * 
+	 * Tests the True cases when moving from a Tableau to a King Foundation.
 	 */
 	public void testFoundationMoveToKingTrue(){
 		//Case: Move tableau to Empty King Foundation (Case is true)
@@ -193,7 +198,7 @@ public class TestCasesBisley extends KSTestCase {
 	}
 	
 	/**
-	 * 
+	 * Tests the False cases when moving from a Tableau to a King Foundation.
 	 */
 	public void testFoundationMoveToKingFalse(){
 		Card topCard = bisley.tableau[2].peek();
@@ -293,7 +298,7 @@ public class TestCasesBisley extends KSTestCase {
 	}
 	
 	/**
-	 * 
+	 * Tests the King Release Automove
 	 */
 	public void testAutoMove(){
 		//Case: Move tableau to King Foundation (Case is true)
@@ -306,7 +311,9 @@ public class TestCasesBisley extends KSTestCase {
 	}
 	
 	/**
+	 * Tests that the game is won when the score reaches a threshold of 44.
 	 * 
+	 * (44 is the maximum score a user could obtain (52 - 4 Aces - 4 Automove Kings = 44))
 	 */
 	public void testWon(){
 		ModelFactory.init(bisley.aces[1], "AC");
@@ -329,7 +336,7 @@ public class TestCasesBisley extends KSTestCase {
 	}
 	
 	/**
-	 * 
+	 * Tests the TableauToTableauMove class
 	 */
 	public void testTableauToTableauMove(){	
 		//Case: Move 10D card from tableau 1 to JD tableau 9
@@ -418,7 +425,7 @@ public class TestCasesBisley extends KSTestCase {
 	} 
 	
 	/**
-	 * 
+	 * Tests the MoveColumnMove class
 	 */
 	public void testMoveColumnMove(){
 		// first create a mouse event
@@ -457,7 +464,7 @@ public class TestCasesBisley extends KSTestCase {
 	}
 	
 	/**
-	 * 
+	 * Tests the AceKingFoundationController class, specifically the mousePress and mouseRelease methods
 	 */
 	public void testAceKingFoundationController(){		
 		ModelFactory.init(bisley.tableau[1], "4D 3C 4S 2H");
@@ -477,7 +484,7 @@ public class TestCasesBisley extends KSTestCase {
 
 	}   
 	/**
-	 * 
+	 * Tests the TableauToTableauController class, specifically the mousePress and mouseRelease methods
 	 */
 	public void testTableauToTableauController(){
 		int overlap =bisley.getCardImages().getOverlap();
