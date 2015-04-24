@@ -1,0 +1,24 @@
+Functionality Checklist
+------
+- move card from tableau to tableau 4/21 14:44
+- move card from tableau to foundation 4/21 14:144
+------
+- undo move(s) 4/21 14:44
+- undo automove - can't undo. 4/21 16:07
+------
+- automove top card kings from tableau to foundation in next to its counterpart Ace
+Whenever a King is released and becomes available, it becomes a foundation and is placed next to its counterpart
+Designing AutoMoves --------
+- every auto-move has a triggering move that initiates action: piggyback auto move with that move or
+- two move classes: when and where do you construct the move?
+At end of every move in controller, call base class and check for automoves 4/21 15:27
+------
+- Block out empty tableau buildable piles 4/21 15:57
+------
+- Block out respective King piles: only counterpart Kings can be placed next to the matching Ace(s) --> messes with automove if not configured properly. 4/23 10:25
+------
+- Increment score with a move from tableau to foundation 4/21 14:44
+- Implement the hasWon method to say the game has been won 4/21 14:55
+------
+- Add Rank-1 to King Foundations (any suit)
+------
